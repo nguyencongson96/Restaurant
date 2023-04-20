@@ -1,0 +1,17 @@
+.btn-top {
+  position: fixed;
+  right: 3vw;
+  height: 5.5vh;
+  padding: 1.5vh;
+  cursor: pointer;
+  fill: white;
+  background-color: var(--color);
+  border-radius: 40%;
+  animation: UpandDown ease-in-out 1.5s both infinite;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.show-up {
+  opacity: 1;
+}

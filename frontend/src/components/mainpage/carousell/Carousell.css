@@ -1,0 +1,42 @@
+
+.banner{
+    width: 60vw;
+    object-fit: cover;
+    border-radius: 5px;
+    background-position: 0px 0px;
+    overflow: hidden;
+    position: relative;
+
+}
+    /* background-image: url("https://cdn-www.vinid.net/2020/06/81bd769a-20200602_appvinid_bannerweb_lemonde.jpg"); */
+
+
+/* .title{
+    margin: 0;
+    color: whitesmoke;
+    font-size: 35px;
+    padding: 30px; */
+
+.pic{
+    object-position: center;
+    height: 80vh;
+    width: 0%;
+    border-radius: 10px;
+    object-fit: cover;
+    /* object-position: left top; */
+    
+}
+
+
+
+
+.main-pic{
+    width: 100%;
+    min-width: 100%;
+}
+
+@media screen and (max-width: 470px) {
+    .pic{
+      height: 50vh;
+    }
+  }

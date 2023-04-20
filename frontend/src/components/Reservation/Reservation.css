@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+
+:root {
+  --color: #d2ae68;
+  --background-color: #081f28;
+}
+
+.reserve-booking {
+  position: fixed;
+  top: 0;
+  right: -50%;
+  opacity: 0;
+  width: 0;
+  height: 100%;
+  z-index: 99;
+  font-size: 18px;
+  background-color: transparent;
+  border-radius: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.show-reserve {
+  right: 0;
+  opacity: 1;
+  width: 100%;
+  background-color: var(--background-color);
+}
+
+.reserve-form {
+  padding: 0 10%;
+  margin: 15% 0;
+  height: 100%;
+  width: 100%;
+}
+
+.reserve-form * {
+  font-family: "Solitreo", cursive;
+  font-size: 1em;
+}
+
+.reserve-header {
+  font-family: "Lobster Two", cursive;
+  font-size: 3.5em;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color);
+  text-transform: none;
+  width: fit-content;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  font-weight: unset;
+}
+
+.reserve-items > .item {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.reserve-items > .item > * {
+  width: 100%;
+}
+
+.reserve-items > .item > label {
+  font-size: 0.9em;
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.reserve-items > .item > .input {
+  color: var(--clr-gold);
+  height: 2.8rem;
+  border-radius: 5px;
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid var(--color);
+  outline: none;
+  filter: invert(73%) sepia(66%) saturate(302%) hue-rotate(358deg)
+    brightness(89%) contrast(83%);
+  padding: 12px 10px;
+}
+
+.reserve-items > .item > .input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+option {
+  background-color: var(--background-color);
+}
+
+.close-form {
+  color: var(--color);
+  font-size: 2.7rem;
+  font-weight: 700;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-right: 10%;
+  padding-top: 4%;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.reserve-submit {
+  appearance: none;
+  padding: 15px;
+  border-radius: 7px;
+  margin-top: 15px;
+  margin-left: 50%;
+  font-weight: 700;
+  transform: translate(-50%);
+  background-color: var(--color);
+  color: var(--background-color);
+  font-size: 1.1em;
+  transition: 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
+  font-family: "Lobster Two", cursive;
+}
+
+.reserve-submit:hover {
+  box-shadow: 5px 5px 5px gray;
+}
+
+.reserve-submit:active {
+  box-shadow: none;
+  color: gray;
+}
+
+@media screen and (min-width: 768px) {
+}
+
+@media screen and (min-width: 992px) {
+  .show-reserve {
+    width: 50%;
+    border-radius: 10px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .show-reserve {
+    width: 30%;
+    min-width: 380px;
+    max-width: 450px;
+  }
+}
