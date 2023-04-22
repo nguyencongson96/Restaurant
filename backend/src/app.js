@@ -7,8 +7,7 @@ import * as url from "url";
 import express from "express";
 import mongoose from "mongoose";
 import reservation from "#root/route/reservation.js";
-import locationRoute from "#root/route/location.js";
-import timeRoute from "#root/route/time.js";
+import infoRoute from "#root/route/info/index.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
 import dbConnect from "#root/config/dbConnect.config.js";
 
@@ -31,8 +30,7 @@ app.use(cookieParser()); // parse cookies
 
 // use router for handling requests
 app.use("/reservation", reservation);
-app.use("/location", locationRoute);
-app.use("/time", timeRoute);
+app.use("/info", infoRoute);
 
 // use middleware for handling errors
 app.use(errHandler);
@@ -40,5 +38,7 @@ app.use(errHandler);
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  mongoose.connection.once("open", () => console.log("Connected to MongoDB")).on("error", (err) => console.log(err));
+  mongoose.connection
+    .once("open", () => console.log("Connected to MongoDB"))
+    .on("error", (err) => console.log(err));
 });

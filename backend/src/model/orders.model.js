@@ -3,6 +3,8 @@ import validator from "validator";
 import _throw from "#root/utils/throw.js";
 import orderConfig from "#root/config/order.config.js";
 import Location from "#root/model/location.model.js";
+import timeCheck from "#root/utils/timeCheck.js";
+import Users from "#root/model/users.model.js";
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -10,6 +12,7 @@ const orderSchema = new mongoose.Schema({
     require: [true, "User required"],
     validate: async (id) => {
       !validator.isAlphanumeric(id.toString()) && _throw(400, "Invalid User");
+      !(await Users.findById(id)) && _throw(400, "User cannot found");
     },
   },
   status: {
@@ -17,7 +20,8 @@ const orderSchema = new mongoose.Schema({
     lowercase: true,
     require: [true, "Status required"],
     validate: (value) => {
-      (!validator.isAlpha(value) || !orderConfig.status.find((item) => item === value.toLowerCase())) &&
+      (!validator.isAlpha(value) ||
+        !orderConfig.status.find((item) => item === value.toLowerCase())) &&
         _throw(400, "Invalid Status");
     },
   },
@@ -25,8 +29,7 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.ObjectId,
     require: [true, "location required"],
     validate: async (id) => {
-      (!mongoose.Types.ObjectId.isValid(id) || !validator.isAlphanumeric(id.toString())) &&
-        _throw(400, "Invalid location");
+      !mongoose.Types.ObjectId.isValid(id) && _throw(400, "Invalid location");
       !(await Location.findById(id)) && _throw(400, "Location cannot found");
     },
   },
@@ -42,18 +45,19 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     require: [true, "date required"],
     validate: (value) => {
-      const maxTimeBook = parseInt(process.env.MAXDAYBOOK) * 24 * 60 * 60 * 1000;
-      const currentTime = Date.now();
       !validator.isDate(value) && _throw(400, "Invalid Date");
-      value < currentTime && _throw(400, "Cannot book day in the past");
-      value > currentTime + maxTimeBook && _throw(400, "Can only book in advance 3 days");
+      const maxTimeBook = parseInt(process.env.MAXDAYBOOK) * 24 * 60 * 60 * 1000;
+      const now = new Date(),
+        currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+      value < currentDate && _throw(400, "Cannot book day in the past");
+      value > currentDate + maxTimeBook && _throw(400, "Can only book in advance 3 days");
     },
   },
-  timeId: {
-    type: mongoose.ObjectId,
-    require: [true, "Time required"],
-    validate: async (id) => {
-      (!mongoose.Types.ObjectId.isValid(id) || !validator.isAlphanumeric(id.toString())) && _throw(400, "Invalid Time");
+  time: {
+    type: String,
+    require: [true, "time required"],
+    validate: (value) => {
+      timeCheck(value);
     },
   },
 });
