@@ -2,26 +2,18 @@ import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Users from "#root/model/users.model.js";
 import Orders from "#root/model/orders.model.js";
-import validator from "validator";
+import convert from "#root/utils/convert.js";
 
 const handleReservationByUser = {
   getAll: asyncWrapper(async (req, res) => {
-    const { phone } = req.body;
-
-    // Check if phone parameter exists in request object
-    validator.isEmpty(phone) && _throw(400, "Phone required");
-
-    // Check if phone is format of phone
-    const phoneFormat = phone.startsWith(0) ? `+84${phone.slice(1)}` : phone;
-    !validator.isMobilePhone(phoneFormat, "vi-VN", { strictMode: true }) &&
-      _throw(400, "Invalid phone");
+    const phoneFormat = convert.phone(req.body.phone);
 
     // Find a user by phone number using findOne() method of Users model
     const foundUser = await Users.findOne({ phoneFormat });
     if (!foundUser) return res.status(204).json("You are new here");
 
     // Find a reservation by user ID using find method of Orders model
-    const foundOrders = await Orders.find({ userId: foundUser._id });
+    const foundOrders = await Orders.find({ userId: foundUser._id }).populate("locationId");
 
     return !foundOrders
       ? // Send status code 204 and message "There is no order yet" if there is no order found
@@ -29,21 +21,39 @@ const handleReservationByUser = {
       : // Send a JSON response with status code 200 containing two properties: total which is the length of foundOrders array and list which is the foundOrders array itself
         res.status(200).json({ total: foundOrders.length, list: foundOrders });
   }),
+
+  getOne: asyncWrapper(async (req, res) => {
+    const { _id, phone } = req.query;
+
+    // Check if id parameter exists in request object
+    const keyConfig = ["_id", "phone"];
+    keyConfig.forEach((key) => {
+      return !req.query[key] && _throw(400, `${key} required`);
+    });
+
+    const phoneFormat = convert.phone(phone);
+
+    // Find a user by phone number using findOne() method of Users model
+    const foundUser = await Users.findOne({ phoneFormat });
+    if (!foundUser) return res.status(204).json("You are new here");
+
+    // Find a reservation by id using find method of Orders model
+    const foundOrder = await Orders.findOne({ _id, userId: foundUser._id })
+      .populate({ path: "locationId", select: "-_id -__v" })
+      .populate({ path: "userId", select: "-_id -__v" });
+
+    return !foundOrder
+      ? // Send status code 204 and message "There is no order yet" if there is no order found
+        res.status(404).json(`There is no order match id ${id}`)
+      : // Send a JSON response with status code 200 containing two properties: total which is the length of foundOrders array and list which is the foundOrders array itself
+        res.status(200).json(foundOrder);
+  }),
+
   addNew: asyncWrapper(async (req, res) => {
-    const { name, phone, email, locationId, numberOfPeople, dateTime } = req.body;
-    const formatDateTime = new Date(dateTime);
+    const { name, phone, email, locationId, numberOfPeople, date, time } = req.body;
 
     // Create a new order object with locationId and numberOfPeople properties
-    let newOrder = new Orders({
-      locationId,
-      numberOfPeople,
-      date: new Date(
-        formatDateTime.getFullYear(),
-        formatDateTime.getMonth(),
-        formatDateTime.getDate()
-      ),
-      time: `${formatDateTime.getHours()}:${formatDateTime.getMinutes()}`,
-    });
+    let newOrder = new Orders({ locationId, numberOfPeople, date, time });
 
     // Validate the new order object
     await newOrder.validate();

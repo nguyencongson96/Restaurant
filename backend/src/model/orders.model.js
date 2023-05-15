@@ -14,14 +14,14 @@ const orderSchema = new mongoose.Schema({
       !validator.isAlphanumeric(id.toString()) && _throw(400, "Invalid User");
       !(await Users.findById(id)) && _throw(400, "User cannot found");
     },
+    ref: "Users",
   },
   status: {
     type: String,
     lowercase: true,
     require: [true, "Status required"],
     validate: (value) => {
-      (!validator.isAlpha(value) ||
-        !orderConfig.status.find((item) => item === value.toLowerCase())) &&
+      (!validator.isAlpha(value) || !orderConfig.status.find((item) => item === value.toLowerCase())) &&
         _throw(400, "Invalid Status");
     },
   },
@@ -32,11 +32,13 @@ const orderSchema = new mongoose.Schema({
       !mongoose.Types.ObjectId.isValid(id) && _throw(400, "Invalid location");
       !(await Location.findById(id)) && _throw(400, "Location cannot found");
     },
+    ref: "Location",
   },
   numberOfPeople: {
     type: Number,
     require: [true, "number required"],
     min: 1,
+    default: 1,
     validate: (value) => {
       !Number(value) && _throw(400, "Invalid number");
     },
@@ -45,19 +47,14 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     require: [true, "date required"],
     validate: (value) => {
-      !validator.isDate(value) && _throw(400, "Invalid Date");
-      const maxTimeBook = parseInt(process.env.MAXDAYBOOK) * 24 * 60 * 60 * 1000;
-      const now = new Date(),
-        currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-      value < currentDate && _throw(400, "Cannot book day in the past");
-      value > currentDate + maxTimeBook && _throw(400, "Can only book in advance 3 days");
+      timeCheck("date", value);
     },
   },
   time: {
     type: String,
     require: [true, "time required"],
     validate: (value) => {
-      timeCheck(value);
+      timeCheck("time", value);
     },
   },
 });

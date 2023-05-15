@@ -3,5 +3,5 @@ import reservationUserController from "#root/controller/reservation/user.control
 const router = express.Router();
 
 router.route("/").get(reservationUserController.getAll).post(reservationUserController.addNew);
-
+router.get("/view", reservationUserController.getOne);
 export default router;

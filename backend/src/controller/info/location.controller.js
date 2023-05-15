@@ -1,6 +1,6 @@
 import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
-import convertLocation from "#root/utils/convertLocation.js";
+import convert from "#root/utils/convert.js";
 import Location from "#root/model/location.model.js";
 import mongoose from "mongoose";
 
@@ -13,7 +13,7 @@ const handleLocation = {
     // Reduce over the array of locations and return an object for each location that includes its ID and formatted address
     const list = allLocation.reduce((obj, { _id, cityId, districtId, detail }) => {
       // Get the name of the city and district using their IDs
-      const { cityName, districtName } = convertLocation.fromId(cityId, districtId); // Return an object with the location ID as its key and the formatted address as its value
+      const { cityName, districtName } = convert.location.fromId(cityId, districtId); // Return an object with the location ID as its key and the formatted address as its value
       return {
         ...obj,
         [_id]: `${detail}, ${districtName}, ${cityName}`,
@@ -29,7 +29,7 @@ const handleLocation = {
     const { city, district, detail } = req.body;
 
     //Convert from city, district name to city, district Id
-    const { cityId, districtId } = convertLocation.toId(city, district);
+    const { cityId, districtId } = convert.location.toId(city, district);
 
     // Create a new location
     const newLocation = await Location.create({ cityId, districtId, detail });
@@ -46,7 +46,7 @@ const handleLocation = {
     !mongoose.Types.ObjectId.isValid(locationId) && _throw(400, "Invalid Location Id");
 
     //Convert from city, district name to city, district Id
-    const { cityId, districtId } = convertLocation.toId(city, district);
+    const { cityId, districtId } = convert.location.toId(city, district);
 
     // Update the info with the new data
     const updateLocation = await Location.findByIdAndUpdate(

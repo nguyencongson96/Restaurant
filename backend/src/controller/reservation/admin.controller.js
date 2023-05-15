@@ -1,7 +1,6 @@
 import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Orders from "#root/model/orders.model.js";
-import Time from "#root/model/time.model.js";
 
 const handleReservationByAdmin = {
   getAll: asyncWrapper(async (req, res) => {
@@ -15,14 +14,11 @@ const handleReservationByAdmin = {
         res.status(200).json({ total: foundOrders.length, list: foundOrders });
   }),
   update: asyncWrapper(async (req, res) => {
-    const { id, locationId, date, numberOfPeople, status, hour, minute } = req.body;
-
-    const foundTime = await Time.findOne({ hour, minute });
-    !foundTime && _throw(400, "Invalid Time");
+    const { id, locationId, numberOfPeople, status, date, time } = req.body;
 
     const foundOrder = Orders.findByIdAndUpdate(
       id,
-      { locationId, numberOfPeople, status, date, timeId: foundTime._id },
+      { locationId, numberOfPeople, status, date: new Date(date), time },
       { runValidators: true, new: true }
     );
 

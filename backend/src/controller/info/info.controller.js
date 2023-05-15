@@ -17,33 +17,39 @@ const handleInfo = {
 
   // Define a method called update that update location to the database
   update: asyncWrapper(async (req, res) => {
-    const foundInfo = await Info.findOne();
     // If the info is not found, throw an error with a status code of 404 and a message indicating that it was not found
+
+    const foundInfo = await Info.findOne();
     !foundInfo && _throw(404, "Infor not found");
 
     //Config field used to update
-    const updateField = ["name", "phone", "email", "timeId"];
+    const updateField = ["name", "phone", "email", "time"];
 
     //Update each field to foundInfo
     updateField.forEach((field) => {
       const value = req.body[field];
       switch (field) {
         //If field to update is timeId, then update open and close time
-        case "timeId":
+        case "time":
           //Config open and close time based on req.body
-          const { open, close } = req.body;
+          const { open, close, id } = req.body.time;
+          (!open || !close) && _throw(400, "Open and Close time required");
+
           //Find index of time need to update based on timeId of req.body
-          const foundIndex = foundInfo.time.findIndex((item) => item._id.toString() === value);
+          const foundIndex = foundInfo.time.findIndex((item) => item._id.toString() === id);
+          foundIndex < 0 && _throw(400, "Invalid timeId");
+
           //Update open and close time
-          foundInfo.time[foundIndex] = { open, close };
+          foundInfo.time[foundIndex] = { open, close, _id: id };
           break;
 
         //If field to update is not timeId, then update directly value of this field based on value in req.body
         default:
-          foundInfo[field] = value;
+          value && (foundInfo[field] = value);
           break;
       }
     });
+
     await foundInfo.save();
 
     // Return the updated location
