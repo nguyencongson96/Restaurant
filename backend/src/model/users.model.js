@@ -7,25 +7,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     lowercase: true,
     trim: true,
-    require: [true, "Name required"],
+    required: "Name required",
     validate: (value) => {
-      !validator.isAlpha(value) && _throw(400, "Invalid name");
+      !validator.isAlpha(value, "vi-VN", { ignore: " -" }) && _throw(400, "Invalid name");
     },
   },
   phone: {
     type: String,
     trim: true,
-    require: [true, "Phone required"],
+    required: "Phone required",
     validate: (value) => {
       !validator.isMobilePhone(value, "vi-VN", { strictMode: true }) && _throw(400, "Invalid phone");
-    },
-  },
-  email: {
-    type: String,
-    trim: true,
-    require: [true, "Email required"],
-    validate: (value) => {
-      !validator.isEmail(value) && _throw(400, "Invalid email");
     },
   },
 });

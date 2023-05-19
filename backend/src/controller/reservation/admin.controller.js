@@ -1,6 +1,9 @@
 import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Orders from "#root/model/orders.model.js";
+import Users from "#root/model/users.model.js";
+
+const keyConfig = ["bookingName", "numberOfPeople", "date", "time", "locationId", "status", "user"];
 
 const handleReservationByAdmin = {
   getAll: asyncWrapper(async (req, res) => {
@@ -13,16 +16,28 @@ const handleReservationByAdmin = {
       : // Send a JSON response with status code 200 containing two properties: total which is the length of foundOrders array and list which is the foundOrders array itself
         res.status(200).json({ total: foundOrders.length, list: foundOrders });
   }),
-  update: asyncWrapper(async (req, res) => {
-    const { id, locationId, numberOfPeople, status, date, time } = req.body;
+  updateOne: asyncWrapper(async (req, res) => {
+    const { id } = req.params;
 
-    const foundOrder = Orders.findByIdAndUpdate(
+    const foundUser = await Users.findOneAndUpdate(
+      req.body.phone,
+      { phone: req.body.phone },
+      { runValidators: true, upsert: true }
+    );
+
+    const foundOrder = await Orders.findByIdAndUpdate(
       id,
-      { locationId, numberOfPeople, status, date: new Date(date), time },
+      keyConfig.reduce(
+        (obj, item) => {
+          const value = req.body[item];
+          return value ? Object.assign(obj, { [item]: item === "date" ? new Date(value) : value }) : obj;
+        },
+        req.body.phone ? { userId: foundUser._id } : {}
+      ),
       { runValidators: true, new: true }
     );
 
-    return res.status(201).json(foundOrder);
+    return res.status(200).json(Object.assign(foundOrder, { userId: foundUser._id }));
   }),
 };
 

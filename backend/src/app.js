@@ -6,17 +6,14 @@ import path from "path";
 import * as url from "url";
 import express from "express";
 import mongoose from "mongoose";
-import reservation from "#root/route/reservation.js";
-import infoRoute from "#root/route/info/index.js";
+import reservation from "#root/route/reservation/index.js";
+import infoRoute from "#root/route/info.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
-import dbConnect from "#root/config/dbConnect.config.js";
+import formatPhone from "#root/middleware/formatPhone.middleware.js";
 
 // Set up Express server
 const app = express(); // create an instance of an Express application
 const PORT = 4100; // set the port number for the server to listen on
-
-//Connect to mongoDB
-dbConnect();
 
 // Enable Cross-Origin Resource Sharing
 app.use(cors());
@@ -29,7 +26,7 @@ app.use(express.json()); // parse JSON request bodies
 app.use(cookieParser()); // parse cookies
 
 // use router for handling requests
-app.use("/reservation", reservation);
+app.use("/reservation", formatPhone, reservation);
 app.use("/info", infoRoute);
 
 // use middleware for handling errors
