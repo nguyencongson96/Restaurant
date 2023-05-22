@@ -10,10 +10,13 @@ import reservation from "#root/route/reservation/index.js";
 import infoRoute from "#root/route/info.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
 import formatPhone from "#root/middleware/formatPhone.middleware.js";
+import dbConnect from "#root/config/dbConnect.config.js";
 
 // Set up Express server
 const app = express(); // create an instance of an Express application
 const PORT = 4100; // set the port number for the server to listen on
+
+await dbConnect();
 
 // Enable Cross-Origin Resource Sharing
 app.use(cors());

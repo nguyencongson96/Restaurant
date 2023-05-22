@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 const asyncWrapper = (fn) => {
   return async (req, res, next) => {
     try {
-      await dbConnect();
+      // await dbConnect();
       await fn(req, res, next);
-      await mongoose.disconnect();
+      // await mongoose.disconnect();
     } catch (err) {
       next(err);
     }

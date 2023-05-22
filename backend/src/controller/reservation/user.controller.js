@@ -4,7 +4,16 @@ import Users from "#root/model/users.model.js";
 import Orders from "#root/model/orders.model.js";
 import mongoose from "mongoose";
 
-const keyQuery = ["_id", "bookingName", "numberOfPeople", "date", "time", "location", "status", "user"];
+const keyQuery = [
+  "_id",
+  "bookingName",
+  "numberOfPeople",
+  "date",
+  "time",
+  "location",
+  "status",
+  "user",
+];
 
 const lookupPipeline = (key) => {
   switch (key) {
@@ -97,7 +106,9 @@ const handleReservationByUser = {
         $group: {
           _id: "$total",
           total: { $first: "$total" },
-          ...(fieldSelect.find((item) => item === "user") && { user: { $first: "$list.user" } }),
+          ...(fieldSelect.find((item) => item === "user") && {
+            user: { $first: "$list.user" },
+          }),
           list: {
             $push: fieldSelect
               .filter((item) => item !== "user")
@@ -110,7 +121,9 @@ const handleReservationByUser = {
       { $unset: "_id" },
     ]);
 
-    return !foundOrder ? res.status(204).json("There is no order yet") : res.status(200).json(...foundOrder);
+    return !foundOrder
+      ? res.status(204).json("There is no order yet")
+      : res.status(200).json(foundOrder[0]);
   }),
 
   getOne: asyncWrapper(async (req, res) => {

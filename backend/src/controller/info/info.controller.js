@@ -1,8 +1,6 @@
 import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Info from "#root/model/info.model.js";
-import { ObjectId } from "bson";
-import mongoose from "mongoose";
 
 const keyConfig = {
   name: "first",
@@ -15,43 +13,37 @@ const keyConfig = {
 const handleInfo = {
   get: asyncWrapper(async (req, res) => {
     const { field, detail } = req.query;
-    const fieldArr = !field ? [] : req.query.field.split(",");
+    const fieldArr = !field ? Object.keys(keyConfig) : field.split(",");
 
     let allInfo, fieldSelect;
     switch (Number(detail)) {
       case 0:
         fieldSelect = fieldArr.reduce(
-          (result, key) => Object.assign(result, { [key]: { [`$${keyConfig[key]}`]: `$list.${key}` } }),
+          (result, key) => Object.assign(result, { [key]: { [`$${keyConfig[key]}`]: `$${key}` } }),
           {}
         );
 
-        allInfo = (
-          await Info.aggregate([
-            { $unwind: "$location" },
-            { $unwind: "$time" },
-            {
-              $addFields: {
-                location: {
-                  $concat: ["detail", "district", "city"].reduce(
-                    (resultArr, item, index, initArr) => [
-                      ...resultArr,
-                      `$location.${item}`,
-                      index < initArr.length - 1 ? ", " : "",
-                    ],
-                    []
-                  ),
-                },
-                time: { $concat: ["$time.open", " - ", "$time.close"] },
+        allInfo = await Info.aggregate([
+          { $unwind: "$location" },
+          { $unwind: "$time" },
+          {
+            $addFields: {
+              location: {
+                $concat: ["detail", "district", "city"].reduce(
+                  (resultArr, item, index, initArr) => [
+                    ...resultArr,
+                    `$location.${item}`,
+                    index < initArr.length - 1 ? ", " : "",
+                  ],
+                  []
+                ),
               },
+              time: { $concat: ["$time.open", " - ", "$time.close"] },
             },
-            { $facet: { total: [{ $count: "total" }], list: [{ $unset: ["__v", "_id"] }] } },
-            { $unwind: "$total" },
-            { $unwind: "$list" },
-            { $replaceRoot: { newRoot: { total: "$total.total", list: "$list" } } },
-            { $group: Object.assign({ _id: "$total" }, fieldSelect) },
-            { $unset: "_id" },
-          ])
-        )[0];
+          },
+          { $group: Object.assign({ _id: "$name" }, fieldSelect) },
+          { $unset: "_id" },
+        ]);
         break;
 
       case 1:
@@ -68,12 +60,54 @@ const handleInfo = {
   }),
 
   update: asyncWrapper(async (req, res) => {
-    // If the info is not found, throw an error with a status code of 404 and a message indicating that it was not found
+    const fieldSelect = !req.query.field ? Object.keys(keyConfig) : req.query.field.split(",");
+    const fieldUpdateArr = Object.keys(req.body);
+
+    // const foundInfo = await Info.findOne();
+
+    // for (const fieldUpdate of fieldUpdateArr) {
+    //   const reqValue = req.body[fieldUpdate];
+    //   switch (keyConfig[fieldUpdate]) {
+    //     case "first":
+    //       foundInfo[fieldUpdate] = reqValue;
+    //       break;
+
+    //     case "addToSet":
+    //       const initValue = foundInfo[fieldUpdate];
+    //       reqValue.forEach((item, index) => {
+    //         const id = initValue[index]._id;
+    //         initValue[index] = { ...item, _id: id };
+    //       });
+    //       break;
+
+    //     default:
+    //       break;
+    //   }
+    // }
+
+    // await foundInfo.save();
 
     const updateInfo = await Info.findOneAndUpdate(
       {},
-      { name, phone, email, time, location },
-      { runValidators: true, new: true, fields: { _id: 0, __v: 0 } }
+      fieldUpdateArr.reduce((obj, item) => {
+        const reqValue = req.body[item];
+        switch (keyConfig[item]) {
+          case "first":
+            obj[item] = reqValue;
+            break;
+
+          case "addToSet":
+            reqValue.forEach((item, index) => {
+              obj[index] = { ...item };
+            });
+            break;
+
+          default:
+            break;
+        }
+        return obj;
+      }, {}),
+      { runValidators: true, fields: { _id: 0, __v: 0 } }
     ).lean();
 
     // Return the updated location

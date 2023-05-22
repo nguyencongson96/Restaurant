@@ -1,6 +1,12 @@
 const formatPhone = (req, res, next) => {
   const phone = req.body.phone || req.query.phone;
-  phone && phone.startsWith(0) && (req.phone = `+84${phone.slice(1)}`);
+  if (phone) {
+    const trimPhone = phone ? phone.trim() : phone;
+    const formatPhone = trimPhone.startsWith(0)
+      ? `+84${trimPhone.slice(1)}`
+      : `+${trimPhone}`;
+    req.phone = formatPhone;
+  } else req.phone = phone;
   next();
 };
 
