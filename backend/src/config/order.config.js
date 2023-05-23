@@ -1,5 +1,5 @@
 const orderConfig = {
-  key: ["name", "phone", "email", "location", "numberOfPeople", "date"],
+  key: ["_id", "bookingName", "numberOfPeople", "date", "time", "location", "status", "user"],
   status: ["success", "completed", "cancelled"],
 };
 

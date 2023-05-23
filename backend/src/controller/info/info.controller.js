@@ -63,51 +63,37 @@ const handleInfo = {
     const fieldSelect = !req.query.field ? Object.keys(keyConfig) : req.query.field.split(",");
     const fieldUpdateArr = Object.keys(req.body);
 
-    // const foundInfo = await Info.findOne();
-
-    // for (const fieldUpdate of fieldUpdateArr) {
-    //   const reqValue = req.body[fieldUpdate];
-    //   switch (keyConfig[fieldUpdate]) {
-    //     case "first":
-    //       foundInfo[fieldUpdate] = reqValue;
-    //       break;
-
-    //     case "addToSet":
-    //       const initValue = foundInfo[fieldUpdate];
-    //       reqValue.forEach((item, index) => {
-    //         const id = initValue[index]._id;
-    //         initValue[index] = { ...item, _id: id };
-    //       });
-    //       break;
-
-    //     default:
-    //       break;
-    //   }
-    // }
-
-    // await foundInfo.save();
-
     const updateInfo = await Info.findOneAndUpdate(
       {},
-      fieldUpdateArr.reduce((obj, item) => {
+      fieldUpdateArr.reduce((result, item) => {
         const reqValue = req.body[item];
+
+        let formatVal;
         switch (keyConfig[item]) {
           case "first":
-            obj[item] = reqValue;
+            formatVal = { [item]: reqValue };
             break;
 
           case "addToSet":
-            reqValue.forEach((item, index) => {
-              obj[index] = { ...item };
-            });
+            formatVal = reqValue.reduce((obj, subItem, index) => {
+              const convertObj = Object.keys(subItem).reduce(
+                (obj, key) => Object.assign(obj, { [`${item}.${index}.${key}`]: subItem[key] }),
+                {}
+              );
+              return Object.assign(obj, convertObj);
+            }, {});
             break;
 
           default:
             break;
         }
-        return obj;
+        return Object.assign(result, formatVal);
       }, {}),
-      { runValidators: true, fields: { _id: 0, __v: 0 } }
+      {
+        runValidators: true,
+        fields: fieldSelect.reduce((obj, item) => Object.assign({ [item]: 1 }, obj), {}),
+        new: true,
+      }
     ).lean();
 
     // Return the updated location

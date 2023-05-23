@@ -11,6 +11,7 @@ import infoRoute from "#root/route/info.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
 import formatPhone from "#root/middleware/formatPhone.middleware.js";
 import dbConnect from "#root/config/dbConnect.config.js";
+import fieldSelect from "#root/middleware/fieldSelect.middleware.js";
 
 // Set up Express server
 const app = express(); // create an instance of an Express application
@@ -29,6 +30,7 @@ app.use(express.json()); // parse JSON request bodies
 app.use(cookieParser()); // parse cookies
 
 // use router for handling requests
+app.use(fieldSelect);
 app.use("/reservation", formatPhone, reservation);
 app.use("/info", infoRoute);
 
