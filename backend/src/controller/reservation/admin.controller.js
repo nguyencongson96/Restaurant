@@ -9,11 +9,11 @@ const keyQuery = orderConfig.key;
 
 const handleReservationByAdmin = {
   getAll: asyncWrapper(async (req, res) => {
-    const { limit } = req.query;
+    const { page, random } = req.query;
 
     // Get all orders
     const foundOrders = await Orders.aggregate(
-      pipeline({ lookup: ["location", "user"], facet: true, limit: limit }, req.fieldSelect)
+      pipeline({ lookup: ["location", "user"], facet: { page, random } }, req.fieldSelect)
     );
 
     return foundOrders ? res.status(200).json(foundOrders[0]) : res.status(204).json("There is no order yet");

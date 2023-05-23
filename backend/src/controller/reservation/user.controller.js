@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 const handleReservationByUser = {
   getAll: asyncWrapper(async (req, res) => {
-    const { limit } = req.query;
+    const { page, random } = req.query;
     // Find a user by phone number using findOne() method of Users model
     const foundUser = await Users.findOne({ phone: req.phone });
     if (!foundUser) return res.status(204).json("You are new here");
@@ -15,7 +15,7 @@ const handleReservationByUser = {
     // Find a reservation by user ID using find method of Orders model
     const foundOrder = await Orders.aggregate(
       pipeline(
-        { match: { userId: foundUser._id }, lookup: ["location", "user"], facet: true, limit: limit },
+        { match: { userId: foundUser._id }, lookup: ["location", "user"], facet: { page, random } },
         req.fieldSelect
       )
     );

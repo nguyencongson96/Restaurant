@@ -8,10 +8,11 @@ import express from "express";
 import mongoose from "mongoose";
 import reservation from "#root/route/reservation/index.js";
 import infoRoute from "#root/route/info.js";
+import productRoute from "#root/route/product.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
 import formatPhone from "#root/middleware/formatPhone.middleware.js";
-import dbConnect from "#root/config/dbConnect.config.js";
 import fieldSelect from "#root/middleware/fieldSelect.middleware.js";
+import dbConnect from "#root/config/dbConnect.config.js";
 
 // Set up Express server
 const app = express(); // create an instance of an Express application
@@ -33,6 +34,7 @@ app.use(cookieParser()); // parse cookies
 app.use(fieldSelect);
 app.use("/reservation", formatPhone, reservation);
 app.use("/info", infoRoute);
+app.use("/product", productRoute);
 
 // use middleware for handling errors
 app.use(errHandler);

@@ -8,16 +8,14 @@ const productSchema = new mongoose.Schema({
     trim: true,
     required: "name required",
     validate: (value) => {
-      !validator.isAlpha(value, "vi-VN", { ignore: " -" }) && _throw(400, "Invalid name");
+      !validator.isAlpha(value, "vi-VN", { ignore: " -/()" }) && _throw(400, "Invalid name");
     },
   },
-  class: {
+  category: {
     type: String,
     default: "appertizers",
     validate: (value) => {
-      (!validator.isAlpha(value, "vi-VN", { ignore: " -" }) ||
-        !["appertizers", "salad&soups", "main"].includes(value)) &&
-        _throw(400, "Invalid class");
+      !["appertizers", "salad&soups", "main"].includes(value) && _throw(400, "Invalid class");
     },
   },
   price: {
@@ -26,6 +24,10 @@ const productSchema = new mongoose.Schema({
     validate: (value) => {
       !Number(value) && _throw(400, "Invalid price");
     },
+  },
+  description: {
+    type: String,
+    required: "description required",
   },
   createdAt: {
     type: Date,
