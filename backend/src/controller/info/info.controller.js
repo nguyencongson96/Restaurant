@@ -1,24 +1,19 @@
 import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Info from "#root/model/info.model.js";
+import infoConfig from "#root/config/info.config.js";
+import jwt from "jsonwebtoken";
 
-const keyConfig = {
-  name: "first",
-  phone: "first",
-  email: "first",
-  time: "addToSet",
-  location: "addToSet",
-};
+const keyConfig = infoConfig.key;
 
 const handleInfo = {
   get: asyncWrapper(async (req, res) => {
-    const { field, detail } = req.query;
-    const fieldArr = !field ? Object.keys(keyConfig) : field.split(",");
+    const { detail } = req.query;
 
     let allInfo, fieldSelect;
     switch (Number(detail)) {
       case 0:
-        fieldSelect = fieldArr.reduce(
+        fieldSelect = req.fieldSelect.reduce(
           (result, key) => Object.assign(result, { [key]: { [`$${keyConfig[key]}`]: `$${key}` } }),
           {}
         );
@@ -28,16 +23,7 @@ const handleInfo = {
           { $unwind: "$time" },
           {
             $addFields: {
-              location: {
-                $concat: ["detail", "district", "city"].reduce(
-                  (resultArr, item, index, initArr) => [
-                    ...resultArr,
-                    `$location.${item}`,
-                    index < initArr.length - 1 ? ", " : "",
-                  ],
-                  []
-                ),
-              },
+              location: { $concat: ["$location.detail", ", ", "$location.district", ", ", "$location.city"] },
               time: { $concat: ["$time.open", " - ", "$time.close"] },
             },
           },
@@ -47,7 +33,11 @@ const handleInfo = {
         break;
 
       case 1:
-        fieldSelect = fieldArr.reduce((obj, item) => Object.assign(obj, { [item]: 1 }), { _id: 0 }, {});
+        fieldSelect = req.fieldSelect.reduce(
+          (obj, item) => Object.assign(obj, { [item]: 1 }),
+          { _id: 0 },
+          {}
+        );
         allInfo = await Info.findOne({}, fieldSelect);
         break;
 
@@ -59,8 +49,30 @@ const handleInfo = {
     return allInfo ? res.status(200).json(allInfo) : res.status(204).json("No Info");
   }),
 
+  logIn: asyncWrapper(async (req, res) => {
+    const { password } = req.body;
+    const foundInfo = await Info.findOne({ password });
+    !foundInfo && _throw(400, "wrong password");
+
+    const accessToken = jwt.sign(
+      {
+        info: {
+          user: foundInfo.name,
+          password: password,
+          roles: "admin",
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "3d" }
+    );
+
+    foundInfo.accessToken = accessToken;
+    await foundInfo.save();
+
+    return res.status(200).json({ accessToken });
+  }),
+
   update: asyncWrapper(async (req, res) => {
-    const fieldSelect = !req.query.field ? Object.keys(keyConfig) : req.query.field.split(",");
     const fieldUpdateArr = Object.keys(req.body);
 
     const updateInfo = await Info.findOneAndUpdate(
@@ -91,13 +103,22 @@ const handleInfo = {
       }, {}),
       {
         runValidators: true,
-        fields: fieldSelect.reduce((obj, item) => Object.assign({ [item]: 1 }, obj), {}),
+        fields: req.fieldSelect.reduce((obj, item) => Object.assign({ [item]: 1 }, obj), {}),
         new: true,
       }
     ).lean();
 
     // Return the updated location
     return res.status(200).json(updateInfo);
+  }),
+
+  logOut: asyncWrapper(async (req, res) => {
+    const foundInfo = await Info.findOneAndUpdate(
+      {},
+      { accessToken: "" },
+      { runValidators: true, new: true, fields: { _id: 0, __v: 0 } }
+    );
+    return res.status(200).json(foundInfo);
   }),
 };
 

@@ -42,6 +42,12 @@ const handleReservationByAdmin = {
 
     return res.status(200).json(foundOrder);
   }),
+
+  updateMany: asyncWrapper(async (req, res) => {
+    const { id, status } = req.body;
+    const updateProduct = await Orders.updateMany({ _id: id }, { status: status });
+    return res.status(200).json(updateProduct);
+  }),
 };
 
 export default handleReservationByAdmin;

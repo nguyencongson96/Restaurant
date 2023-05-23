@@ -75,6 +75,16 @@ const infoSchema = new mongoose.Schema({
       },
     },
   ],
+  password: {
+    type: String,
+    required: "required password",
+    validate: (value) => {
+      validator.isStrongPassword(value);
+    },
+  },
+  accessToken: {
+    type: String,
+  },
 });
 
 const Info = mongoose.model("Info", infoSchema);

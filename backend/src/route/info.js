@@ -4,4 +4,7 @@ const router = express.Router();
 
 router.route("/").get(infoController.get).put(infoController.update);
 
+router.route("/login").post(infoController.logIn);
+router.route("/logout").post(infoController.logOut);
+
 export default router;
