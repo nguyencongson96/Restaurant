@@ -1,17 +1,19 @@
 import { React, useState } from "react";
 import { useEffect } from "react";
 import "./App.css";
-import ProPage from "./components/Promotion/ProPage";
-import ReservationPage from "./components/Reservation/ReservationPage";
+import ProPage from "./pages/promotion/ProPage";
+import ReservationPage from "./pages/reservation/ReservationPage";
 import ButtonToTop from "./components/buttonToTop/ButtonToTop";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/header/Header";
-import Main from "./components/mainpage/Main";
+import Main from "./pages/mainpage/Main";
 import Footer from "./components/footer/Footer";
-import AboutUs from "./components/aboutUs/AboutUs";
-import Menupage from "./components/menuhomepage/Menupage";
+import AboutUs from "./pages/aboutUs/AboutUs";
+import Menupage from "./pages/menuhomepage/Menupage";
 import { Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 function App() {
   const [showReserve, setShowReserve] = useState(false);
@@ -44,44 +46,31 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Provider store={store}>
       {loading ? (
         <div className="loader-container">
           <div className="spinner one"> Sona</div>
           <div className="spinner two">
-            <span className="line">
-              A genuine fine-dining experience awaits.
-            </span>
+            <span className="line">A genuine fine-dining experience awaits.</span>
           </div>
         </div>
       ) : (
-        // <div className="all">
         <div className="bigContainer">
           <Header showReversePage={handleShowReserve}></Header>
           <Routes>
-            {/* <Main></Main> */}
-            <Route path="/BTTC/" element={<Main />} />
-            <Route path="/BTTC/Menu" element={<Menupage />} />
-            <Route path="/BTTC/Promotion" element={<ProPage />} />
-            <Route path="/BTTC/AboutUs" element={<AboutUs />} />
-            <Route path="/BTTC*" element={<Main />} />
-
-            {/* <Menupage></Menupage> */}
-            {/* <ProPage /> */}
-            {/* <AboutUs></AboutUs> */}
+            <Route path="/" element={<Main />} />
+            <Route path="/Menu" element={<Menupage />} />
+            <Route path="/Promotion" element={<ProPage />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/*" element={<Main />} />
           </Routes>
-          <ReservationPage
-            showPage={showReserve}
-            closePage={handleShowReserve}
-            notification={handleNoti}
-          />
+          <ReservationPage showPage={showReserve} closePage={handleShowReserve} notification={handleNoti} />
           <ButtonToTop />
           <ToastContainer />
-          <Footer></Footer>
+          <Footer />
         </div>
-        // </div>
       )}
-    </>
+    </Provider>
   );
 }
 

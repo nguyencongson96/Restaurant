@@ -1,24 +1,43 @@
-import React from "react";
-import "./Footer.css";
+import React, { useEffect } from "react";
+import styles from "./Footer.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getInfo } from "../../store/reducers/info";
 
 const Footer = () => {
+  const dispatch = useDispatch();
+  const { name, phone, email, time, location } = useSelector((state) => state.infos.detail);
+
+  useEffect(() => {
+    dispatch(getInfo({ detail: 0, field: [] }));
+  }, [dispatch]);
+
   return (
-    <div className="footer">
-      <div className="ft-info ft-item">
-        <div className="ft-title">Info</div>
-        <div className="address">Xuan Dieu, Tay Ho, Ha Noi</div>
-        <div className="email">contactus@sona.com</div>
-        <div className="phone">+84 223 1997</div>
-      </div>
-      <div className="ft-open ft-item">
-        <div className="ft-title">Open Time</div>
-        <div>11:00 - 14:00 & 18:00 - 22:00</div>
-      </div>
-      <div className="ft-social ft-item">
-        <div className="ft-title">Social Media</div>
-        <div>@Sona</div>
-        <div className="social-icon"></div>
-      </div>
+    <div className={styles.footer}>
+      <h5 className={styles.item}>
+        <div className={styles.title}>Address</div>
+        <div className={styles.content}>
+          <ul className={styles.address}>
+            {location &&
+              location.map((item, index) => (
+                <li key={index}>
+                  CS{index + 1}: {item}
+                </li>
+              ))}
+          </ul>
+        </div>
+      </h5>
+      <h5 className={styles.item}>
+        <div className={styles.title}>Open Time</div>
+        <div className={styles.content}>{time && time.join(" & ")}</div>
+      </h5>
+      <h5 className={styles.item}>
+        <div className={styles.title}>Contact</div>
+        <div className={styles.content}>
+          <div className={styles.phone}>{phone}</div>
+          <div className={styles.email}>{email}</div>
+          <div className={styles.name}>@{name}</div>
+        </div>
+      </h5>
     </div>
   );
 };
