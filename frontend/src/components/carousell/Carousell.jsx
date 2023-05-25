@@ -9,23 +9,20 @@ const Carousell = (props) => {
   useEffect(() => {
     const timerImg = setInterval(() => {
       setImgindex((prev) => (prev === BannerData.length - 1 ? 0 : prev + 1));
-    }, 3000);
+    }, 7000);
     return () => clearInterval(timerImg);
   }, [BannerData.length]);
 
   return (
     <div className={styles.banner}>
-      {BannerData.map((item) => {
-        const { id, img } = item;
-        return (
-          <img
-            key={id}
-            src={img}
-            alt="no"
-            className={`${styles.pic} ${id === imgIndex ? styles.main_pic : ""}`}
-          />
-        );
-      })}
+      {BannerData.map((item, index) => (
+        <img
+          key={index}
+          src={item}
+          alt="no"
+          className={`${styles.pic} ${index === imgIndex ? styles.main_pic : ""}`}
+        />
+      ))}
     </div>
   );
 };

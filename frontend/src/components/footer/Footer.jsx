@@ -8,7 +8,7 @@ const Footer = () => {
   const { name, phone, email, time, location } = useSelector((state) => state.infos.detail);
 
   useEffect(() => {
-    dispatch(getInfo({ detail: 0, field: [] }));
+    dispatch(getInfo({ detail: 0 }));
   }, [dispatch]);
 
   return (

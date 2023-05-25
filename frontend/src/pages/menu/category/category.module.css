@@ -1,0 +1,28 @@
+.container {
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+  flex-wrap: wrap;
+}
+
+.filter {
+  background: transparent;
+  border-color: transparent;
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  padding: 0.375rem 0.75rem;
+  color: var(--clr-gold);
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--radius);
+  font-family: "Lobster Two";
+  width: 20%;
+  max-width: 200px;
+}
+.filter:hover,
+.active {
+  background: var(--clr-gold);
+  color: var(--clr-white);
+}

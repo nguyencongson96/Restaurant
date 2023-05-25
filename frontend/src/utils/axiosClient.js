@@ -6,7 +6,7 @@ const axiosClient = axios.create({
     "content-type": "application/json",
   },
 });
-axiosClient.interceptors.request.use(async (request) => {
+axiosClient.interceptors.request.use((request) => {
   const token = localStorage.getItem("token");
   token && (request.headers.Authorization = token);
   return request;

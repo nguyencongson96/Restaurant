@@ -10,7 +10,7 @@ import Header from "./components/header/Header";
 import Main from "./pages/mainpage/Main";
 import Footer from "./components/footer/Footer";
 import AboutUs from "./pages/aboutUs/AboutUs";
-import Menupage from "./pages/menuhomepage/Menupage";
+import Menupage from "./pages/menu/Menupage";
 import { Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";

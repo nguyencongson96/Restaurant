@@ -1,0 +1,112 @@
+.slogan_menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20vh;
+  margin-bottom: 15vh;
+  letter-spacing: 3px;
+  line-height: normal;
+}
+
+.slogan_menu_text {
+  font-size: 3.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.sign {
+  position: relative;
+  display: flex;
+  width: 60%;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.go_left {
+  top: 50%;
+  transform: translateY(-50%);
+  border-bottom: 2px solid #d2ae68;
+  width: 10%;
+  left: 0;
+}
+
+.go_right {
+  top: 50%;
+  transform: translateY(-50%);
+  border-bottom: 2px solid #d2ae68;
+  width: 10%;
+  right: 0;
+}
+
+.vid_mp {
+  height: 90vh;
+  -o-object-fit: cover;
+  object-fit: contain;
+  outline: none;
+  width: 100%;
+  opacity: 0.6;
+}
+
+.slogan_menu_logo {
+  font-size: 3rem;
+  font-family: "Sacramento", cursive;
+  animation: fly linear 2s both;
+  margin: 0rem 1rem;
+  text-align: center;
+}
+
+@keyframes fly {
+  0% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.menupage {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: auto;
+}
+
+.title {
+  text-align: center;
+  margin: 10rem 0rem 7rem;
+}
+
+.underline {
+  width: 12rem;
+  height: 0.25rem;
+  background: var(--clr-gold);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title_name {
+  height: 4rem;
+  font-size: 4rem;
+}
+
+@media screen and (min-width: 768px) {
+  .title_name {
+    font-size: 6rem;
+  }
+}
+@media screen and (min-width: 1200px) {
+}
+
+@media screen and (max-width: 450px) {
+  .slogan_menu_logo {
+    font-size: 2rem;
+  }
+
+  .slogan_menu {
+    margin-bottom: 0rem;
+  }
+
+  .title {
+    margin: 0rem 0rem 5rem;
+  }
+}

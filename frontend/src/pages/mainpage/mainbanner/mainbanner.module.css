@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Playball&display=swap");
+
+.container {
+  background-image: url("https://media.cntraveler.com/photos/6295a64fb093cd6c1800c4ca/16:9/w_2580,c_limit/La%20Me%CC%81nage%CC%81re_%C2%A9%20Mattia%20Aquila%20@mattiaaquila_Salle%20a%20Manger,%20Private%20Dining%20Room.jpg");
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BANNER */
+
+.mainbanner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(89, 98, 117, 0.8);
+  border-radius: 10px;
+  padding: 2rem;
+  width: 50%;
+  text-align: center;
+  animation: abc 3s both ease-in-out;
+}
+
+@keyframes abc {
+  0% {
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    width: 0;
+  }
+  100% {
+    width: 50%;
+  }
+}
+
+.logo {
+  font-size: 5.5rem;
+  line-height: normal;
+  font-family: "Sacramento", cursive;
+  height: fit-content;
+}
+
+.ad {
+  font-size: 2rem;
+  line-height: normal;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.line {
+  position: relative;
+  display: flex;
+  width: 60%;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.dash {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-bottom: 2px solid #d2ae68;
+  width: 40%;
+}
+
+.star {
+  width: 10%;
+  fill: #d2ae68;
+}
+
+.btn {
+  background-color: transparent;
+  appearance: none;
+  border: none;
+  font-family: "Solitreo", cursive;
+  font-size: 2rem;
+  color: inherit;
+  border-bottom: 2px solid;
+  border-top: 2px solid;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 992px) {
+  .ad {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mainbanner {
+    padding: 1rem;
+  }
+
+  .logo {
+    font-size: 3.5rem;
+  }
+
+  .ad {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 570px) {
+}

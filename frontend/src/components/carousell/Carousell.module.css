@@ -17,8 +17,25 @@
 }
 
 .main_pic {
+  --time: 7000ms;
   width: 100%;
   min-width: 100%;
+  animation: change_pic var(--time) both infinite;
+}
+
+@keyframes change_pic {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @media screen and (max-width: 470px) {
