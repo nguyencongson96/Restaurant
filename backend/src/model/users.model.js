@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: "Phone required",
     validate: (value) => {
-      !validator.isMobilePhone(value, "vi-VN", { strictMode: true }) && _throw(400, "Invalid phone");
+      (validator.isEmpty(value) || !validator.isMobilePhone(value, "vi-VN")) && _throw(400, "Invalid phone");
     },
   },
 });

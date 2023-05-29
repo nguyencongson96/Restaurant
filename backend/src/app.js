@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import reservation from "#root/route/reservation/index.js";
 import infoRoute from "#root/route/info.js";
 import productRoute from "#root/route/product.js";
+import eventRoute from "#root/route/event.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
 import formatPhone from "#root/middleware/formatPhone.middleware.js";
 import fieldSelect from "#root/middleware/fieldSelect.middleware.js";
@@ -35,6 +36,7 @@ app.use(fieldSelect);
 app.use("/reservation", formatPhone, reservation);
 app.use("/info", infoRoute);
 app.use("/product", productRoute);
+app.use("/event", eventRoute);
 
 // use middleware for handling errors
 app.use(errHandler);

@@ -76,7 +76,7 @@ export default function pipeline(obj, fieldSelect) {
               _id: "$total",
               total: { $first: "$total" },
               pages: { $first: "$pages" },
-              ...(fieldSelect.find((item) => item === "user") && {
+              ...(fieldSelect.includes("user") && {
                 user: { $first: "$list.user" },
               }),
               list: {

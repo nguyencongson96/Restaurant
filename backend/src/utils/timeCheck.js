@@ -1,5 +1,6 @@
 import _throw from "#root/utils/throw.js";
 import validator from "validator";
+import Info from "#root/model/info.model.js";
 
 export default function timeCheck(type, value) {
   switch (type) {
@@ -18,7 +19,8 @@ export default function timeCheck(type, value) {
       break;
 
     case "time":
-      validator.isTime(value, { hourFormat: "hour24", mode: "default" });
+      !validator.isTime(value, { hourFormat: "hour24", mode: "default" }) &&
+        _throw(400, "Invalid Time format");
       break;
 
     default:

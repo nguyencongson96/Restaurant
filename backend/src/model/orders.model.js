@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import _throw from "#root/utils/throw.js";
-import orderConfig from "#root/config/order.config.js";
+import generalConfig from "#root/config/general.config.js";
 import Info from "#root/model/info.model.js";
 import timeCheck from "#root/utils/timeCheck.js";
 import Users from "#root/model/users.model.js";
+
+const orderConfig = generalConfig.order;
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -20,7 +22,6 @@ const orderSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: "name required",
-    default: async () => (await Users.findById(this.userId)).name,
     validate: (value) => {
       !validator.isAlpha(value, "vi-VN", { ignore: " -" }) && _throw(400, "Invalid name");
     },
@@ -62,8 +63,10 @@ const orderSchema = new mongoose.Schema({
   time: {
     type: String,
     required: "time required",
-    validate: (value) => {
+    validate: async (value) => {
       timeCheck("time", value);
+      const { time } = await Info.findOne({}, { time: 1, _id: 0 });
+      !time.some((item) => item.close > value && value > item.open) && _throw(400, "Invalid Time Value");
     },
   },
 });

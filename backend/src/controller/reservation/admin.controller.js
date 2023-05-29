@@ -2,10 +2,10 @@ import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Orders from "#root/model/orders.model.js";
 import Users from "#root/model/users.model.js";
-import orderConfig from "#root/config/order.config.js";
+import generalConfig from "#root/config/general.config.js";
 import pipeline from "#root/config/pipeline.config.js";
 
-const keyQuery = orderConfig.key;
+const keyQuery = generalConfig.order.key;
 
 const handleReservationByAdmin = {
   getAll: asyncWrapper(async (req, res) => {
@@ -13,7 +13,7 @@ const handleReservationByAdmin = {
 
     // Get all orders
     const foundOrders = await Orders.aggregate(
-      pipeline({ lookup: ["location", "user"], facet: { page, random } }, req.fieldSelect)
+      pipeline({ lookup: ["location"], facet: { page, random } }, req.fieldSelect)
     );
 
     return foundOrders ? res.status(200).json(foundOrders[0]) : res.status(204).json("There is no order yet");

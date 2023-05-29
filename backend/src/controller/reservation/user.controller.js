@@ -8,11 +8,10 @@ import mongoose from "mongoose";
 const handleReservationByUser = {
   getAll: asyncWrapper(async (req, res) => {
     const { page, random } = req.query;
-    // Find a user by phone number using findOne() method of Users model
+
     const foundUser = await Users.findOne({ phone: req.phone });
     if (!foundUser) return res.status(204).json("You are new here");
 
-    // Find a reservation by user ID using find method of Orders model
     const foundOrder = await Orders.aggregate(
       pipeline(
         { match: { userId: foundUser._id }, lookup: ["location", "user"], facet: { page, random } },
@@ -59,15 +58,18 @@ const handleReservationByUser = {
     // Create a new order object with locationId and numberOfPeople properties
     let newOrder = new Orders({ bookingName, locationId, numberOfPeople, date, time });
 
+    const bookingTime = new Date(date + " " + time);
+    bookingTime < new Date() && _throw(400, { time: "Cannot book time in the past" });
+
     // Find or create a user in the database using Mongoose's findOneAndUpdate() method
-    const user = await Users.findOneAndUpdate(
+    const foundUser = await Users.findOneAndUpdate(
       { phone: req.phone },
       { name: bookingName },
-      { upsert: true, runValidators: true }
+      { upsert: true, runValidators: true, new: true, returnDocument: "after" }
     );
 
     // Assign the user ID to the new order object and save it to the database with a status of "success"
-    Object.assign(newOrder, { userId: user._id, status: "success" });
+    Object.assign(newOrder, { userId: foundUser._id, status: "success" });
     await newOrder.save();
 
     // Return a JSON response with a status code of 201 and the new order object as its body

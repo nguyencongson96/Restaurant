@@ -33,8 +33,7 @@ const handleProduct = {
   }),
 
   addNew: asyncWrapper(async (req, res) => {
-    const { name, category, price, description } = req.body;
-    let newProduct = await Products.create({ name, category, price, description });
+    let newProduct = await Products.create(req.body);
     return res.status(201).json(newProduct);
   }),
 

@@ -1,44 +1,65 @@
 import asyncWrapper from "#root/middleware/async.middleware.js";
 import _throw from "#root/utils/throw.js";
 import Info from "#root/model/info.model.js";
-import infoConfig from "#root/config/info.config.js";
+import generalConfig from "#root/config/general.config.js";
 import jwt from "jsonwebtoken";
 
-const keyConfig = infoConfig.key;
+const keyConfig = generalConfig.info.key;
 
 const handleInfo = {
   get: asyncWrapper(async (req, res) => {
     const { detail } = req.query;
 
-    let allInfo, fieldSelect;
+    let allInfo;
     switch (Number(detail)) {
       case 0:
-        fieldSelect = req.fieldSelect.reduce(
-          (result, key) => Object.assign(result, { [key]: { [`$${keyConfig[key]}`]: `$${key}` } }),
-          {}
-        );
-
         allInfo = await Info.aggregate([
           { $unwind: "$location" },
-          { $unwind: "$time" },
           {
             $addFields: {
-              location: { $concat: ["$location.detail", ", ", "$location.district", ", ", "$location.city"] },
-              time: { $concat: ["$time.open", " - ", "$time.close"] },
+              location: {
+                _id: "$location._id",
+                detail: { $concat: ["$location.detail", ", ", "$location.district", ", ", "$location.city"] },
+              },
             },
           },
-          { $group: Object.assign({ _id: "$name" }, fieldSelect) },
+          { $project: { "location.city": 0, "location.district": 0 } },
+          {
+            $group: {
+              _id: "$name",
+              ...req.fieldSelect
+                .filter((item) => item !== "time")
+                .reduce(
+                  (obj, value) => Object.assign(obj, { [value]: { [`$${keyConfig[value]}`]: `$${value}` } }),
+                  {}
+                ),
+              time: { $first: "$time" },
+            },
+          },
+          { $unset: "_id" },
+          { $unwind: "$time" },
+          { $addFields: { time: { $concat: ["$time.open", " - ", "$time.close"] } } },
+          {
+            $group: {
+              _id: "$name",
+              ...req.fieldSelect
+                .filter((item) => item !== "location")
+                .reduce(
+                  (obj, value) => Object.assign(obj, { [value]: { [`$${keyConfig[value]}`]: `$${value}` } }),
+                  {}
+                ),
+              location: { $first: "$location" },
+            },
+          },
           { $unset: "_id" },
         ]);
         break;
 
       case 1:
-        fieldSelect = req.fieldSelect.reduce(
-          (obj, item) => Object.assign(obj, { [item]: 1 }),
-          { _id: 0 },
-          {}
+        allInfo = await Info.find(
+          {},
+          req.fieldSelect.reduce((obj, item) => Object.assign(obj, { [item]: 1 }), { _id: 0 }, {})
         );
-        allInfo = await Info.findOne({}, fieldSelect);
         break;
 
       default:
@@ -46,7 +67,7 @@ const handleInfo = {
     }
 
     // Return a JSON response with a status code of 200 and the array of location objects as its body
-    return allInfo ? res.status(200).json(allInfo) : res.status(204).json("No Info");
+    return allInfo ? res.status(200).json(allInfo[0]) : res.status(204).json("No Info");
   }),
 
   logIn: asyncWrapper(async (req, res) => {
@@ -74,42 +95,33 @@ const handleInfo = {
 
   update: asyncWrapper(async (req, res) => {
     const fieldUpdateArr = Object.keys(req.body);
+    const foundInfo = await Info.findOne();
 
-    const updateInfo = await Info.findOneAndUpdate(
-      {},
-      fieldUpdateArr.reduce((result, item) => {
-        const reqValue = req.body[item];
+    fieldUpdateArr.forEach((item) => {
+      const reqValue = req.body[item];
 
-        let formatVal;
-        switch (keyConfig[item]) {
-          case "first":
-            formatVal = { [item]: reqValue };
-            break;
+      switch (keyConfig[item]) {
+        case "first":
+          foundInfo[item] = reqValue;
+          break;
 
-          case "addToSet":
-            formatVal = reqValue.reduce((obj, subItem, index) => {
-              const convertObj = Object.keys(subItem).reduce(
-                (obj, key) => Object.assign(obj, { [`${item}.${index}.${key}`]: subItem[key] }),
-                {}
-              );
-              return Object.assign(obj, convertObj);
-            }, {});
-            break;
+        case "push":
+          foundInfo[item] = reqValue.reduce((arr, subItem, index) => {
+            const id = foundInfo[item][index]?._id;
+            arr.push(id ? subItem : Object.assign(subItem, { _id: id }));
+            return arr;
+          }, []);
+          break;
 
-          default:
-            break;
-        }
-        return Object.assign(result, formatVal);
-      }, {}),
-      {
-        runValidators: true,
-        fields: req.fieldSelect.reduce((obj, item) => Object.assign({ [item]: 1 }, obj), {}),
-        new: true,
+        default:
+          break;
       }
-    ).lean();
+    });
+
+    await foundInfo.save();
 
     // Return the updated location
-    return res.status(200).json(updateInfo);
+    return res.status(200).json(foundInfo);
   }),
 
   logOut: asyncWrapper(async (req, res) => {

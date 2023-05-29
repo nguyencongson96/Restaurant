@@ -75,6 +75,10 @@ const infoSchema = new mongoose.Schema({
       },
     },
   ],
+  description: {
+    type: String,
+  },
+  image: [{ type: String }],
   password: {
     type: String,
     required: "required password",
