@@ -1,0 +1,99 @@
+:root {
+  --color: #d2ae68;
+  --background-color: #081f28;
+}
+
+.item {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.item > * {
+  width: 100%;
+}
+
+.item > label {
+  font-size: 0.9em;
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.item > .input {
+  color: var(--clr-gold);
+  height: 2.8rem;
+  border-radius: 5px;
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid var(--color);
+  outline: none;
+  filter: invert(73%) sepia(66%) saturate(302%) hue-rotate(358deg) brightness(89%) contrast(83%);
+  padding: 12px 10px;
+  font-size: 0.8rem;
+}
+
+.item > .input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.dateTime {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  width: 55%;
+}
+
+.time {
+  width: 40%;
+}
+
+option {
+  background-color: var(--background-color);
+}
+
+.submit {
+  appearance: none;
+  padding: 10px;
+  border-radius: 7px;
+  margin-top: 15px;
+  margin-left: 50%;
+  font-weight: 700;
+  transform: translate(-50%);
+  background-color: var(--color);
+  color: var(--background-color);
+  font-size: 1.1em;
+  transition: 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
+  font-family: "Lobster Two", cursive !important;
+}
+
+.submit:hover {
+  box-shadow: 5px 5px 5px gray;
+}
+
+.submit:active {
+  box-shadow: none;
+  color: gray;
+}
+
+.note {
+  position: absolute;
+  bottom: 10px;
+  font-size: 0.9rem;
+  font-style: italic;
+  font-weight: normal;
+}
+
+@media screen and (min-width: 768px) {
+}
+
+@media screen and (min-width: 992px) {
+}
+
+@media screen and (min-width: 1200px) {
+}

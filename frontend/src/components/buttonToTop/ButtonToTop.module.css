@@ -1,4 +1,4 @@
-.btn-top {
+.btn {
   position: fixed;
   right: 3vw;
   height: 5.5vh;
@@ -12,6 +12,22 @@
   transition: 0.3s ease-in-out;
 }
 
-.show-up {
+.show {
   opacity: 1;
+}
+
+.btn:hover {
+  animation-play-state: paused;
+}
+
+@keyframes UpandDown {
+  0% {
+    top: 91vh;
+  }
+  50% {
+    top: 90vh;
+  }
+  100% {
+    top: 91vh;
+  }
 }

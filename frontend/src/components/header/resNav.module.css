@@ -1,0 +1,43 @@
+.res_nav {
+  width: 100vw;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: fixed;
+  right: 0;
+  top: 12vh;
+  background-color: rgba(8, 31, 40, 0.8);
+  z-index: 2;
+  color: #d2ae68;
+  animation: Res 500ms both;
+}
+.res_nav a,
+.res_reverse {
+  padding: 4px 16px 8px 16px;
+  margin-bottom: 4px;
+  text-align: center;
+  font-size: 24px;
+  transition: 0.2s all ease-in-out;
+  border-bottom: 3px solid transparent;
+}
+.res_nav a:hover {
+  border-bottom: 3px solid rgb(170, 111, 111);
+}
+.res_reverse:hover {
+  border-bottom: 3px solid rgb(170, 111, 111);
+  cursor: pointer;
+}
+
+.reverse {
+  animation-direction: reverse;
+}
+
+@keyframes Res {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

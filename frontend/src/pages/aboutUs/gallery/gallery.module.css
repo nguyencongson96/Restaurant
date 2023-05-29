@@ -1,3 +1,8 @@
+.container {
+  padding-bottom: 10%;
+  margin-top: 10%;
+}
+
 .gallery {
   width: 100%;
   height: 400px;
@@ -12,24 +17,7 @@
   align-items: center;
 }
 
-.btn {
-  color: #c48519;
-  font-size: 5rem;
-  z-index: 2;
-  margin: 0 2%;
-  height: fit-content;
-  position: absolute;
-  top: 50%;
-  border: none;
-  cursor: pointer;
-}
-.btn-prev {
-  left: 0;
-}
-.btn-next {
-  right: 0;
-}
-.banner-img {
+.img {
   opacity: 0.3;
   width: 25%;
   height: 300px;
@@ -37,29 +25,49 @@
   z-index: 1;
   transition: all ease-in-out 1s;
 }
-.img-active {
+.active {
   opacity: 1;
   width: 50%;
   height: 400px;
 }
-.banner-hide {
+.hide {
   width: 0%;
 }
 
+.title {
+  padding: 5px;
+  font-family: "Lobster Two";
+  text-align: center;
+  padding: 16px;
+  font-size: 6rem;
+  line-height: normal;
+}
+
+.title ~ .underline {
+  margin-bottom: 4rem;
+}
+
 @media screen and (max-width: 600px) {
-  .banner-img {
+  .img {
     height: 150px;
   }
-  .img-active {
+  .active {
     height: 220px;
-  } 
-  .btn {
-    font-size: 3rem;
   }
-  .about-title ~ .underline {
+
+  .title ~ .underline {
     margin-bottom: 0;
   }
-  .gallery-container{
+  .container {
     padding-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container > .underline {
+    width: 8rem;
+  }
+  .title {
+    font-size: 4rem;
   }
 }

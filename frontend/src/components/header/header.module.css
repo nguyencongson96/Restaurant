@@ -6,11 +6,6 @@
   justify-content: space-between;
   width: 100%;
   height: 12vh;
-  /* background: radial-gradient(
-    circle,
-    rgba(231, 223, 226, 0.048354375930059534) 0%,
-    rgba(28, 68, 112, 0.4881302862942052) 67%
-  ); */
   background-color: transparent;
   font-size: 25px;
   color: #d2ae68;
@@ -20,38 +15,37 @@
   transition: 0.3s ease-in-out;
 }
 
-.bg-show {
+.show {
   background-color: inherit;
 }
 
-.header-left {
+.left {
   font-family: "Sacramento", cursive;
   font-size: 50px;
   color: #d2ae68;
   cursor: pointer;
 }
 
-
-.header-right {
+.right {
   display: flex;
   justify-content: space-evenly;
   width: 50%;
   cursor: pointer;
 }
 
-.header-right > *{
+.right > * {
   color: #d2ae68;
 }
-.fa-bars{
+.fa_bars {
   display: none;
-cursor: pointer;
+  cursor: pointer;
 }
 
-@media (max-width:768px){
-  .header-right{
+@media (max-width: 768px) {
+  .right {
     display: none;
   }
-  .fa-bars{
+  .fa_bars {
     display: inline-block;
   }
 }

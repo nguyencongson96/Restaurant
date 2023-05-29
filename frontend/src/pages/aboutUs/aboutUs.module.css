@@ -1,12 +1,6 @@
 :root {
   --bg-cl--: #081f28;
-  --bg-tit--: linear-gradient(
-    -87deg,
-    #d7b46e 0%,
-    #ae8341 34%,
-    #f0cc86 72%,
-    #9b732d 100%
-  );
+  --bg-tit--: linear-gradient(-87deg, #d7b46e 0%, #ae8341 34%, #f0cc86 72%, #9b732d 100%);
 }
 .aboutUs {
   background-color: var(--bg-cl--);
@@ -15,13 +9,13 @@
 
 /* Banner */
 
-.ab-banner {
+.banner {
   width: 100%;
   height: 100vh;
   display: flex;
   overflow: hidden;
 }
-.ab-banner img {
+.banner img {
   height: 100%;
   width: 100%;
   position: relative;
@@ -30,7 +24,7 @@
   object-fit: cover;
   object-position: center center;
 }
-.ab-banner p {
+.banner p {
   z-index: 2;
   position: absolute;
   top: 50%;
@@ -51,49 +45,27 @@
   flex-direction: column;
 }
 
-.desc-in {
+.desc_in {
   margin-bottom: 4rem;
   display: flex;
   justify-content: space-between;
-  /* text-align: justify; */
   padding: 0rem 7rem;
   gap: 5%;
 }
 
-.desc-in > * {
+.desc_in > * {
   color: var(--clr-gold);
   width: 50%;
-  /* margin: 0rem 2rem 0rem 6rem; */
   font-family: "Solitreo", cursive;
   line-height: normal;
 }
 
-.line-one {
+.line_one {
   font-size: 2.3rem;
 }
 
-.line-two * {
+.line_two * {
   color: var(--clr-gold);
-}
-
-.about-title {
-  /* width: 300px; */
-  padding: 5px;
-  font-family: "Lobster Two";
-  text-align: center;
-  /* margin: 100px auto 50px auto; */
-  /* font-size: 34px; */
-  /* color: #081f28;
-  border-radius: 5px; */
-  /* background: var(--bg-tit--); */
-  /* box-shadow: 2pt 2pt #d7b46e; */
-  padding: 16px;
-  font-size: 6rem;
-  line-height: normal;
-}
-
-.about-title ~ .underline {
-  margin-bottom: 4rem;
 }
 
 .desc > p {
@@ -109,148 +81,15 @@
   box-shadow: 2px 2px #caaf80;
   margin-bottom: 100px;
 }
-.gallery-container {
-  /* border: 3px solid #caaf80; */
-  padding-bottom: 10%;
-  margin-top: 10%;
-}
 
-/* Review */
-/* .review {
-  margin-bottom: 100px;
-}
-.review-detail {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  text-align: center;
-}
-
-.rv-item {
-  width: 30%;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-top: 16px;
-  background: rgb(235, 232, 232);
-  box-shadow: 4pt 4pt rgb(204, 193, 193);
-}
-
-.chef-text {
-  text-align: center;
-  width: 65%;
-  padding: 8px;
-  font-style: italic;
-  font-size: 18px;
-  color: #081f28;
-}
-.chef-info {
-  background-color: white;
-  width: 35%;
-  height: 100%;
-  border-right: 2px dotted #9b732d;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.chef-img {
-  width: 100%;
-  height: 75%;
-  padding-top: 8px;
-  display: flex;
-}
-.chef-img img {
-  width: 70%;
-  height: 90%;
-  object-fit: cover;
-  border-radius: 50%;
-  margin: auto;
-}
-.chef-name {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: 600;
-  font-size: 13px;
-  color: #85530e;
-  height: 25%;
-  text-align: center;
-  width: 100%;
-  padding: 0 8px;
-} */
-/* 
-@media (max-width: 1200px) {
-  .chef-img img {
-    width: 80%;
-  }
-  .rv-item {
-    height: 150px;
-  }
-  .chef-name {
-    font-size: 10px;
-  }
-  .chef-text {
-    font-size: 16px;
-  }
-  .about-title {
-    font-size: 30px;
-  }
-}
-@media (max-width: 992px) {
-  .chef-name {
-    font-size: 9px;
-    height: 25%;
-    line-height: 2;
-  }
-  .chef-img img {
-    height: 75%;
-  }
-  .chef-text {
-    font-size: 14px;
-  }
-  .about-title {
-    font-size: 28px;
-  }
-}
-@media (max-width: 768px) {
-  .review-detail {
-    flex-direction: column;
-  }
-  .rv-item {
-    width: 80%;
-    height: 230px;
-  }
-  .chef-img {
-    height: 80%;
-  }
-  .chef-img img {
-    width: 80%;
-    height: 80%;
-  }
-  .chef-text {
-    font-size: 18px;
-  }
-  .chef-name {
-    font-size: 12px;
-    height: 20%;
-  }
-  .about-title {
-    font-size: 26px;
-  }
-  .ab-banner p {  
-    font-size: 40px;
-  }
-} */
-
-.about-main {
+.main {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  /* gap: 2%; */
   width: fit-content;
 }
 
-.about-main-text {
+.main_text {
   display: flex;
   flex-direction: column;
   text-align: justify;
@@ -267,14 +106,14 @@
   line-height: normal;
 }
 
-.chef-text {
+.chef_text {
   font-size: 1.2rem;
   color: var(--clr-gold);
   line-height: normal;
   font-family: "Solitreo";
 }
 
-.card-list {
+.card_list {
   display: flex;
   justify-content: center;
   gap: 6%;
@@ -285,7 +124,6 @@
   border: 1px solid hsl(0, 0%, 0%, 0.25);
   box-shadow: 0.5rem 0.5rem 1rem hsl(0, 0%, 0%, 0.5);
   width: 47%;
-  /* min-width: 250px; */
   overflow: hidden;
   position: relative;
   aspect-ratio: 9/16;
@@ -308,10 +146,6 @@
   z-index: 0;
   width: 100%;
 }
-
-/* .card:hover img {
-  top: -2rem;
-} */
 
 .card > .caption {
   background-color: hsl(0, 0%, 0%, 0);
@@ -339,8 +173,8 @@
   text-align: center;
   color: var(--clr-light);
   font-size: 1.8rem;
-  text-shadow: 2px 2px 0 var(--clr-shade), -2px -2px 0 var(--clr-shade),
-    -2px 2px 0 var(--clr-shade), 2px -2px 0 var(--clr-shade);
+  text-shadow: 2px 2px 0 var(--clr-shade), -2px -2px 0 var(--clr-shade), -2px 2px 0 var(--clr-shade),
+    2px -2px 0 var(--clr-shade);
 }
 
 .card > .caption p {
@@ -356,75 +190,65 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .desc-in{
+  .desc_in {
     padding: 0 4rem;
   }
-  .line-one{
+  .line_one {
     font-size: 2rem;
   }
-  .line-two, .chef-text{
+  .line_two,
+  .chef_text {
     font-size: 1.15rem;
   }
-  .about-main{
+  .main {
     row-gap: 1.5rem;
   }
-  .about-main-text{
+  .main_text {
     width: 50%;
     margin: 0 1.5rem;
   }
-  .about-main > .card{
+  .main > .card {
     width: 25%;
   }
-  .chef{
+  .chef {
     line-height: normal;
     margin-bottom: 1.5rem;
     font-size: 4rem;
   }
-
-  /* .card{
-    min-width: 190px;
-  } */
-  .about-title{
-    font-size: 4rem;
-  }
-  .gallery-container > .underline{
-    width: 8rem;
-  }
-
 }
 
 @media screen and (max-width: 992px) {
-  .line-one{
+  .line_one {
     font-size: 1.8rem;
   }
-  .line-two, .chef-text{
+  .line_two,
+  .chef_text {
     font-size: 1.05rem;
   }
-  .card{
+  .card {
     min-width: none;
   }
-  .desc-in {
+  .desc_in {
     padding: 0 2.2rem;
   }
-  .about-main{
+  .main {
     flex-direction: column-reverse;
   }
-  .about-main > *{
+  .main > * {
     width: 80%;
   }
-  .chef-text{
+  .chef_text {
     text-align: center;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .desc-in{
+  .desc_in {
     flex-direction: column;
     padding: 0 1.2rem;
   }
-  .desc-in > *{
+  .desc_in > * {
     width: 100%;
     text-align: center;
   }
 }
-

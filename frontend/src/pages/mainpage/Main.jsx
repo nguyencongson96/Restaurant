@@ -8,7 +8,7 @@ import styles from "./Main.module.css";
 
 const Main = () => {
   const { location } = useSelector((state) => state.infos.detail);
-  const ranLocation = location[Math.floor(Math.random() * location.length)];
+  const ranLocation = location[Math.floor(Math.random() * location.length)]?.detail;
   return (
     <div className={styles.main}>
       <MainBanner location={ranLocation} />

@@ -10,7 +10,7 @@ import { getProduct } from "../../../store/reducers/product";
 const Menu = () => {
   const dispatch = useDispatch();
   const { promo, product } = useSelector((state) => {
-    return { promo: state.infos.detail.image, product: state.products.totalList };
+    return { promo: state.infos.detail.image, product: state.products.totalList.map((item) => item.image) };
   });
 
   useEffect(() => {

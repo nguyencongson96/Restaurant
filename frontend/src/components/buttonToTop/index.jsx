@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ButtonToTop.css";
+import styles from "./ButtonToTop.module.css";
 
 const ButtonToTop = () => {
   const [toTopShow, setToTopShow] = useState(false);
@@ -7,7 +7,7 @@ const ButtonToTop = () => {
   window.addEventListener("scroll", onScroll);
   return (
     <svg
-      className={`btn-top ${toTopShow && "show-up"}`}
+      className={`${styles.btn} ${toTopShow && styles.show}`}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"
       onClick={() => {

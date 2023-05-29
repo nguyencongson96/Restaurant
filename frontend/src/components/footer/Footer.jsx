@@ -20,7 +20,7 @@ const Footer = () => {
             {location &&
               location.map((item, index) => (
                 <li key={index}>
-                  CS{index + 1}: {item}
+                  CS{index + 1}: {item.detail}
                 </li>
               ))}
           </ul>

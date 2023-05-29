@@ -1,0 +1,147 @@
+.container {
+  text-align: center;
+  color: #d2ae68;
+  font-family: inherit;
+  font-size: 60px;
+  padding-top: 40vh;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  line-height: normal;
+  animation: fade 3s both ease-in-out;
+  animation-iteration-count: 1;
+}
+
+@keyframes fade {
+  0% {
+    background-color: rgba(8, 31, 40, 1);
+  }
+  60% {
+    opacity: 1;
+    background-color: rgba(8, 31, 40, 1);
+  }
+  100% {
+    opacity: 0;
+    background-color: rgba(8, 31, 40, 0.5);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.one {
+  animation: showup 4.5s;
+  animation-iteration-count: 1;
+}
+
+.two {
+  width: 0px;
+  animation: reveal 4.5s;
+  animation-iteration-count: 1;
+}
+
+.two .line {
+  margin-left: -355px;
+  animation: slidein 4.5s;
+  animation-iteration-count: 1;
+}
+
+@keyframes showup {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    margin-left: -800px;
+  }
+  20% {
+    margin-left: -800px;
+  }
+  35% {
+    margin-left: 0px;
+  }
+  100% {
+    margin-left: 0px;
+  }
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    width: 0px;
+  }
+  20% {
+    opacity: 1;
+    width: 0px;
+  }
+  30% {
+    width: 900px;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    width: 900px;
+  }
+}
+
+@media screen and (max-width: 1010px) {
+  .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.834);
+    z-index: 1;
+  }
+
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: 10px;
+    font-size: 150px;
+    font-weight: 700;
+    animation: neon 1s ease infinite;
+  }
+
+  @keyframes neon {
+    0%,
+    100% {
+      text-shadow: 0 0 10px #e7d7e6a8, 0 0 20px #ddd3dde9, 0 0 20px #dfe4e7a8, 0 0 20px #cecadfa8,
+        0 0 2px #fed128, 2px 2px 2px #806914;
+      color: #ecece9;
+    }
+    50% {
+      text-shadow: 0 0 2px #800e0b, 0 0 5px #800e0b, 0 0 5px #800e0b, 0 0 5px #800e0b, 0 0 2px #800e0b,
+        4px 4px 2px #40340a;
+      color: #d2ae68;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    font-size: 55px;
+  }
+}

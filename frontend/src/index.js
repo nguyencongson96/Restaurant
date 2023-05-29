@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import Scroll from "./components/Scrolltop/Scroll";
+import Scroll from "./components/scroll";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
