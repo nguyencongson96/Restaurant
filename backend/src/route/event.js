@@ -4,6 +4,10 @@ const router = express.Router();
 
 router.route("/").get(eventController.getAll).post(eventController.addNew);
 
-router.route("/:id").put(eventController.updateOne).delete(eventController.deleteOne);
+router
+  .route("/:id")
+  .get(eventController.getOne)
+  .put(eventController.updateOne)
+  .delete(eventController.deleteOne);
 
 export default router;

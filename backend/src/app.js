@@ -10,6 +10,7 @@ import reservation from "#root/route/reservation/index.js";
 import infoRoute from "#root/route/info.js";
 import productRoute from "#root/route/product.js";
 import eventRoute from "#root/route/event.js";
+import placeRoute from "#root/route/place.js";
 import errHandler from "#root/middleware/errHandler.middleware.js";
 import formatPhone from "#root/middleware/formatPhone.middleware.js";
 import fieldSelect from "#root/middleware/fieldSelect.middleware.js";
@@ -37,6 +38,7 @@ app.use("/reservation", formatPhone, reservation);
 app.use("/info", infoRoute);
 app.use("/product", productRoute);
 app.use("/event", eventRoute);
+app.use("/place", placeRoute);
 
 // use middleware for handling errors
 app.use(errHandler);

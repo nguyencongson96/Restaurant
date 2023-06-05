@@ -18,7 +18,7 @@ const generalConfig = {
   },
   product: { key: ["_id", "name", "category", "price", "description", "image", "createdAt", "updatedAt"] },
   event: {
-    key: ["_id", "title", "category", "description", "image", "beginAt", "endAt", "location"],
+    key: ["_id", "title", "category", "description", "image", "beginAt", "endAt", "location", "locationId"],
     category: ["event", "promotion", "highlight"],
   },
 };

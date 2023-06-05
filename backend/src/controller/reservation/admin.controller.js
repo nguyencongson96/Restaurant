@@ -4,6 +4,7 @@ import Orders from "#root/model/orders.model.js";
 import Users from "#root/model/users.model.js";
 import generalConfig from "#root/config/general.config.js";
 import pipeline from "#root/config/pipeline.config.js";
+import mongoose from "mongoose";
 
 const keyQuery = generalConfig.order.key;
 
@@ -19,6 +20,21 @@ const handleReservationByAdmin = {
     return foundOrders ? res.status(200).json(foundOrders[0]) : res.status(204).json("There is no order yet");
   }),
 
+  getOne: asyncWrapper(async (req, res) => {
+    const { id } = req.params;
+
+    // Find a reservation by id using find method of Orders model
+    const foundOrder = await Orders.aggregate([
+      ...pipeline({ match: { _id: new mongoose.Types.ObjectId(id) }, lookup: ["user", "location"] }),
+      { $addFields: { phone: "$user.phone" } },
+      { $unset: ["user"] },
+    ]);
+
+    return !foundOrder
+      ? res.status(404).json(`There is no order match id ${_id}`)
+      : res.status(200).json(foundOrder[0]);
+  }),
+
   updateOne: asyncWrapper(async (req, res) => {
     const { id } = req.params;
 
@@ -28,7 +44,7 @@ const handleReservationByAdmin = {
       { runValidators: true, upsert: true, new: true }
     );
 
-    const foundOrder = await Orders.findByIdAndUpdate(
+    await Orders.findByIdAndUpdate(
       id,
       keyQuery.reduce(
         (obj, item) => {
@@ -40,7 +56,13 @@ const handleReservationByAdmin = {
       { runValidators: true, new: true }
     );
 
-    return res.status(200).json(foundOrder);
+    const foundOrder = await Orders.aggregate([
+      ...pipeline({ match: { _id: new mongoose.Types.ObjectId(id) }, lookup: ["user", "location"] }),
+      { $addFields: { phone: "$user.phone" } },
+      { $unset: ["user"] },
+    ]);
+
+    return res.status(200).json(foundOrder[0]);
   }),
 
   updateMany: asyncWrapper(async (req, res) => {

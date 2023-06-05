@@ -36,7 +36,7 @@ export default function pipeline(obj, fieldSelect) {
                   },
                 },
                 { $unwind: "$location" },
-                { $unset: ["locationId", "__v"] },
+                { $unset: ["__v"] },
                 { $addFields: { location: "$location.location" } }
               );
 

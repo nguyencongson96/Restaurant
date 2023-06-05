@@ -19,11 +19,13 @@ const handleInfo = {
             $addFields: {
               location: {
                 _id: "$location._id",
-                detail: { $concat: ["$location.detail", ", ", "$location.district", ", ", "$location.city"] },
+                summary: {
+                  $concat: ["$location.detail", ", ", "$location.district", ", ", "$location.city"],
+                },
               },
             },
           },
-          { $project: { "location.city": 0, "location.district": 0 } },
+          // { $project: { "location.city": 0, "location.district": 0 } },
           {
             $group: {
               _id: "$name",
@@ -36,9 +38,9 @@ const handleInfo = {
               time: { $first: "$time" },
             },
           },
-          { $unset: "_id" },
+          // { $unset: "_id" },
           { $unwind: "$time" },
-          { $addFields: { time: { $concat: ["$time.open", " - ", "$time.close"] } } },
+          { $addFields: { time: { summary: { $concat: ["$time.open", " - ", "$time.close"] } } } },
           {
             $group: {
               _id: "$name",
