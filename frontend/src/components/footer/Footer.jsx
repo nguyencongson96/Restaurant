@@ -20,7 +20,7 @@ const Footer = () => {
             {location &&
               location.map((item, index) => (
                 <li key={index}>
-                  CS{index + 1}: {item.detail}
+                  CS{index + 1}: {item.summary}
                 </li>
               ))}
           </ul>
@@ -28,7 +28,14 @@ const Footer = () => {
       </h5>
       <h5 className={styles.item}>
         <div className={styles.title}>Open Time</div>
-        <div className={styles.content}>{time && time.join(" & ")}</div>
+        <div className={styles.content}>
+          {time &&
+            time.reduce(
+              (str, item, index) =>
+                index === time.length - 1 ? str.concat(item.summary) : str.concat(item.summary, " & "),
+              ""
+            )}
+        </div>
       </h5>
       <h5 className={styles.item}>
         <div className={styles.title}>Contact</div>

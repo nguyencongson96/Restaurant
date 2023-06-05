@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./search.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getMany } from "../../../store/reducers/reservation";
+import { getManyByUser } from "../../../store/reducers/reservation";
 import List from "./list";
 
 const Search = () => {
@@ -15,7 +15,7 @@ const Search = () => {
 
   function handleClick(e) {
     e.preventDefault();
-    dispatch(getMany({ phone }));
+    dispatch(getManyByUser({ phone }));
   }
 
   return (

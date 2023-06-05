@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./form.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import reservationsSlice, { addNew } from "../../../store/reducers/reservation";
+import reservationsSlice, { addNewByUser } from "../../../store/reducers/reservation";
 
 const Form = () => {
   const { current } = useSelector((state) => state.reservations);
@@ -26,7 +26,7 @@ const Form = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    dispatch(addNew(current));
+    dispatch(addNewByUser(current));
   }
 
   return (
@@ -62,7 +62,6 @@ const Form = () => {
             value={current.location}
             onChange={handleChange}
             name="locationId"
-            defaultValue={"Default"}
           >
             <option hidden value="Default">
               Choose a location

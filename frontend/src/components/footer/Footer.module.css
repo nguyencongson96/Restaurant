@@ -1,11 +1,12 @@
 .footer {
+  position: relative;
+  top: 150px;
   display: flex;
   width: 100%;
   justify-content: space-around;
   margin: 0 auto;
-  padding: 30px 40px;
   font-size: 1.3rem;
-  margin-top: 100px;
+  margin-bottom: 10px;
 }
 
 .item {

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import infoAPI from "../../../service/infoAPI";
+import infoAPI from "service/infoAPI";
+import { handleNoti } from "../general";
 
 export const getInfo = createAsyncThunk("info/getInfo", async (obj, thunkAPI) => {
   try {
@@ -19,11 +20,7 @@ export const updateInfo = createAsyncThunk("info/updateInfo", async (obj, thunkA
 });
 
 export const logIn = createAsyncThunk("info/logIn", async (pwd, thunkAPI) => {
-  try {
-    return await infoAPI.logIn(pwd);
-  } catch (error) {
-    thunkAPI.rejectWithValue(error.message);
-  }
+  return await infoAPI.logIn(pwd);
 });
 
 export const logOut = createAsyncThunk("info/logOut", async (obj, thunkAPI) => {
@@ -34,35 +31,48 @@ export const logOut = createAsyncThunk("info/logOut", async (obj, thunkAPI) => {
   }
 });
 
+const initState = {
+  name: "",
+  phone: "",
+  email: "",
+  description: "",
+  image: [],
+  time: [],
+  location: [],
+};
+
 const infoSlice = createSlice({
   name: "info",
   initialState: {
     isLogIn: false,
-    detail: {
-      name: "",
-      phone: "",
-      email: "",
-      description: "",
-      image: [],
-      time: [],
-      location: [],
+    detail: initState,
+    currentState: initState,
+  },
+  reducers: {
+    updateState: (state, action) => {
+      state.currentState = action.payload;
     },
   },
-  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getInfo.fulfilled, (state, action) => {
       Object.keys(current(state).detail).forEach((key) => {
         state.detail[key] = action.payload[key];
+        state.currentState[key] = action.payload[key];
       });
     });
     builder.addCase(updateInfo.fulfilled, (state, action) => {
       Object.keys(current(state).detail).forEach((key) => {
         state.detail[key] = action.payload[key];
       });
+      handleNoti("success", "Update Successfully");
     });
     builder.addCase(logIn.fulfilled, (state, action) => {
       state.isLogIn = true;
       localStorage.setItem("token", JSON.stringify(action.payload.accessToken));
+      handleNoti("success", "Login Successfully");
+    });
+    builder.addCase(logIn.rejected, (state, action) => {
+      handleNoti("error", JSON.parse(action.error.message));
     });
     builder.addCase(logOut.fulfilled, (state, action) => {
       state.isLogIn = false;

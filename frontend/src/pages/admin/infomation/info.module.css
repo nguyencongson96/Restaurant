@@ -1,0 +1,122 @@
+:root {
+  --color: #d2ae68;
+  --background-color: #081f28;
+}
+
+.header {
+  margin-bottom: 50px;
+}
+
+.info {
+  width: 90%;
+  margin-right: 20px;
+}
+
+.info label {
+  text-transform: capitalize;
+  min-width: 100px;
+}
+
+.time label {
+  font-family: "Solitreo", cursive;
+  font-size: 0.9rem;
+}
+
+.item {
+  border-bottom: 1px solid var(--color);
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  display: flex;
+}
+.item textarea {
+  width: 100%;
+}
+
+.input {
+  background-color: transparent;
+  color: var(--color);
+  font-family: "Solitreo", cursive;
+  border-radius: 5px;
+  padding: 7px;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.input:hover,
+.input:focus-visible {
+  border-color: var(--color);
+}
+
+.input_area {
+  width: 100%;
+  margin-left: 10px;
+}
+
+.image_row {
+  display: flex;
+  position: relative;
+}
+
+#image input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.remove_image {
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  fill: var(--color);
+  opacity: 0;
+  transition: all 400ms linear;
+}
+
+.image_row:hover > .remove_image {
+  opacity: 1;
+}
+
+.time > .input {
+  margin-right: 20px;
+  width: 85px;
+  filter: invert(73%) sepia(66%) saturate(302%) hue-rotate(358deg) brightness(89%) contrast(83%);
+}
+
+.detail_location {
+  width: 400px;
+}
+
+.location > .input {
+  margin-right: 10px;
+}
+
+.city {
+  width: 180px;
+}
+
+.district {
+  width: 120px;
+}
+
+.btn,
+.btn_image {
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 7px 12px;
+  color: var(--color);
+  font-family: "Lobster Two", cursive;
+  cursor: pointer;
+  outline: var(--background-color);
+}
+
+.btn {
+  position: relative;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.btn_image {
+  margin-top: 7px;
+}

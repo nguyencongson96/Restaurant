@@ -1,0 +1,12 @@
+.admin {
+  position: relative;
+  top: 12vh;
+  min-height: 88vh;
+  display: flex;
+  padding-bottom: 70px;
+}
+
+.show {
+  width: 78%;
+  margin: 0 2%;
+}

@@ -15,13 +15,12 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setShowReservation());
     const handleResize = () => {
       dispatch(checkWidth(window.innerWidth));
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [dispatch, checkWidth, setShowReservation]);
+  }, [dispatch, checkWidth]);
 
   const handleShowReservation = () => {
     dispatch(setShowReservation());

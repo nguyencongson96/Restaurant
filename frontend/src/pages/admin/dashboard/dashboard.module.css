@@ -1,0 +1,80 @@
+:root {
+  --color: #d2ae68;
+  --background-color: #081f28;
+}
+
+.dashboard {
+  position: sticky;
+  top: 12vh;
+  width: 18%;
+  font-size: 1rem;
+  border-right: 2px solid var(--color);
+  height: fit-content;
+}
+
+.header,
+.content,
+.sign_out {
+  width: 80%;
+  margin: auto;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.icon {
+  fill: var(--color);
+  width: 15px;
+  aspect-ratio: 1/1;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--color);
+}
+
+#sub_content,
+.sign_out {
+  display: block;
+  transition: opacity 400ms ease-in-out;
+  cursor: pointer;
+  opacity: 0.5;
+  color: var(--color);
+}
+
+#sub_content {
+  margin: 5px;
+  margin-left: 15px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-family: "Solitreo", cursive;
+  transition: 500ms all ease-in-out;
+}
+
+.sign_out {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+#sub_content:hover,
+.sign_out:hover {
+  opacity: 1;
+}
+
+.active {
+  opacity: 1;
+  color: var(--background-color) !important;
+  background-color: var(--color) !important;
+  opacity: 1 !important;
+}
+
+.active > .icon {
+  fill: var(--background-color);
+}

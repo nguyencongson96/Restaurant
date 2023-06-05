@@ -3,9 +3,11 @@ import axiosClient from "../utils/axiosClient";
 const url = "product";
 const infoAPI = {
   getMany: (obj) => {
-    const newUrl = ["page", "random", "category", "field"]
-      .filter((item) => obj[item] !== undefined)
-      .reduce((string, key) => string.concat(`${key}=${obj[key]}&`), `${url}?`);
+    const newUrl = obj
+      ? ["page", "random", "category", "field"]
+          .filter((item) => obj[item] !== undefined)
+          .reduce((string, key) => string.concat(`${key}=${obj[key]}&`), `${url}?`)
+      : url;
     return axiosClient.get(newUrl);
   },
 
@@ -16,7 +18,10 @@ const infoAPI = {
 
   addNew: (obj) => axiosClient.post(url, obj),
 
-  updateOne: (obj) => axiosClient.put(url, obj),
+  updateOne: (obj) => {
+    const { _id, ...updateInfo } = obj;
+    return axiosClient.put(`${url}/${_id}`, updateInfo);
+  },
 
   deleteOne: (id) => axiosClient.delete(`${url}/${id}`),
 

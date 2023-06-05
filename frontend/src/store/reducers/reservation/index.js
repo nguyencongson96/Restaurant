@@ -1,35 +1,42 @@
 import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit";
-import reservationAPI from "../../../service/reservationAPI";
-import { toast } from "react-toastify";
+import reservationAPI from "service/reservationAPI";
+import { handleNoti } from "../general";
 
-const handleNoti = (status, description) => {
-  setTimeout(() => {
-    toast[status](description, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  }, 500);
-};
-
-export const getMany = createAsyncThunk("reservation/getMany", async (obj, thunkAPI) => {
+export const getManyByUser = createAsyncThunk("reservation/getByUser", async (obj, thunkAPI) => {
   try {
     const { phone, field } = obj;
-    return await reservationAPI.getMany({ phone, field });
+    return await reservationAPI.getManybyUser({ phone, field });
   } catch (error) {
     thunkAPI.rejectWithValue(error.message);
   }
 });
 
-export const addNew = createAsyncThunk("reservation/addNew", async (obj) => {
-  const res = await reservationAPI.addNew(obj);
-  handleNoti("success", res.data);
-  return res;
+export const addNewByUser = createAsyncThunk("reservation/addNewByUser", async (obj) => {
+  return await reservationAPI.addNewByUser(obj);
+});
+
+export const getManyByAdmin = createAsyncThunk("reservation/getManyByAdmin", async (obj, thunkAPI) => {
+  try {
+    return await reservationAPI.getManyByAdmin(obj);
+  } catch (error) {
+    thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+export const updateByAdmin = createAsyncThunk("reservation/updateByAdmin", async (obj, thunkAPI) => {
+  try {
+    return await reservationAPI.updateOneByAdmin(obj);
+  } catch (error) {
+    thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+export const getOneByAdmin = createAsyncThunk("reservation/getOneByAdmin", async (id, thunkAPI) => {
+  try {
+    return await reservationAPI.getOneByAdmin(id);
+  } catch (error) {
+    thunkAPI.rejectWithValue(error.message);
+  }
 });
 
 const reservationsSlice = createSlice({
@@ -38,9 +45,11 @@ const reservationsSlice = createSlice({
     isShow: false,
     list: [],
     current: {
+      _id: "",
       bookingName: "",
       phone: "",
       locationId: "",
+      location: "",
       numberOfPeople: "1",
       date: "",
       time: "",
@@ -56,11 +65,11 @@ const reservationsSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(getMany.fulfilled, (state, action) => {
+    builder.addCase(getManyByUser.fulfilled, (state, action) => {
       const newList = action.payload.list;
       state.list = newList ? newList : [];
     });
-    builder.addCase(addNew.fulfilled, (state, action) => {
+    builder.addCase(addNewByUser.fulfilled, (state, action) => {
       handleNoti("success", "Booking successfully");
       state.isShow = false;
       state.current = {
@@ -72,12 +81,34 @@ const reservationsSlice = createSlice({
         time: "",
       };
     });
-    builder.addCase(addNew.rejected, (state, action) => {
+    builder.addCase(addNewByUser.rejected, (state, action) => {
       const message = Object.values(JSON.parse(action.error.message)).reduce((msg, value) => {
         msg += value += ", ";
         return msg;
       }, "");
       handleNoti("error", message);
+    });
+    builder.addCase(getManyByAdmin.fulfilled, (state, action) => {
+      const newList = action.payload.list;
+      state.list = newList ? newList : [];
+    });
+    builder.addCase(getManyByAdmin.rejected, (state, action) => {
+      console.log(action);
+      const message = Object.values(JSON.parse(action.error.message)).reduce((msg, value) => {
+        msg += value += ", ";
+        return msg;
+      }, "");
+      handleNoti("error", message);
+    });
+    builder.addCase(getOneByAdmin.fulfilled, (state, action) => {
+      const currentState = current(state).current;
+      Object.keys(currentState).forEach((key) => {
+        state.current[key] = action.payload[key];
+      });
+    });
+    builder.addCase(updateByAdmin.fulfilled, (state, action) => {
+      const index = state.list.findIndex((item) => (item._id = action.payload._id));
+      state.list.splice(index, 1, action.payload);
     });
   },
 });

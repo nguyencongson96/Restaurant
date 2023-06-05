@@ -1,0 +1,72 @@
+.event {
+  font-size: 20px;
+  color: var(--color);
+  background-color: var(--background-color);
+  line-height: 100%;
+}
+
+.container {
+  width: 95%;
+  margin: auto;
+  margin-top: 10vh;
+}
+
+.banner {
+  background: url(https://i.natgeofe.com/n/39181071-db55-488f-bd54-707759ad924e/river-hanoi-vietnam.jpg)
+    center center no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.banner_title {
+  position: absolute;
+  font-size: 3.5rem;
+  top: 50%;
+  left: 7%;
+  padding: 10px 20px;
+  letter-spacing: 2px;
+}
+
+.scroll_down {
+  padding: 10px;
+  aspect-ratio: 1/1;
+  height: 50px;
+  position: absolute;
+  fill: var(--color);
+  top: 95vh;
+  left: 50%;
+  transform: translate(-50%, 0);
+  animation: UpandDown ease-in-out 1.5s both infinite;
+  cursor: pointer;
+}
+
+@keyframes UpandDown {
+  0% {
+    top: 91vh;
+  }
+  50% {
+    top: 90vh;
+  }
+  100% {
+    top: 91vh;
+  }
+}
+
+.scroll_down:hover {
+  animation-play-state: paused;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .container {
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+}

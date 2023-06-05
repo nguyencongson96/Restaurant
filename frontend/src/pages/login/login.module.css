@@ -1,0 +1,23 @@
+.form {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+}
+
+.header {
+  text-align: center;
+  font-size: 4rem;
+  margin-bottom: 50px;
+}
+
+.password {
+  background-color: transparent;
+  padding: 7px 20px;
+  color: var(--color);
+  filter: invert(73%) sepia(66%) saturate(302%) hue-rotate(358deg) brightness(89%) contrast(83%);
+  border-radius: 7px;
+  font-size: 1.3rem;
+  font-family: "Playball", cursive;
+}
