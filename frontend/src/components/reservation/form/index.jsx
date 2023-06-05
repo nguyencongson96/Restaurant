@@ -68,7 +68,7 @@ const Form = () => {
             </option>
             {location.map((item, index) => (
               <option key={index} value={item._id}>
-                {item.detail}
+                {item.summary}
               </option>
             ))}
           </select>

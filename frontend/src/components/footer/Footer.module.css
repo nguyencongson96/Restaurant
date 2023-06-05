@@ -35,6 +35,11 @@
   margin-bottom: 5px;
 }
 
+.admin {
+  color: var(--color);
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .item {
     font-size: 14px;

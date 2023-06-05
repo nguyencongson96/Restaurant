@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./Footer.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfo } from "../../store/reducers/info";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ const Footer = () => {
           <div className={styles.phone}>{phone}</div>
           <div className={styles.email}>{email}</div>
           <div className={styles.name}>@{name}</div>
+          <NavLink to="/admin" className={styles.admin}>
+            isAdmin?
+          </NavLink>
         </div>
       </h5>
     </div>
